@@ -20,22 +20,19 @@ bool compare(const std::unique_ptr<Form>& pf1, const std::unique_ptr<Form>& pf2)
     return (pf1->vol.z < pf2->vol.z);
 }
 
+
 void Container::sort() {
     comp_angle = angle;
-    std::sort(forms.begin(), forms.end(), compare);
+    std::sort(child.begin(), child.end(), compare);
 }
 
-/**
- *  Transfers form from this into cont.
- *  @param cont     Container to transfer form into
- *  @param form     Form to be transferred between this and cont
- */
 void Container::transfer(Container* cont, Form* form) {
-    for (ContainerFormList::iterator it = forms.begin(); it != forms.end(); ++it) {
+    for (ContainerFormList::iterator it = child.begin(); it != child.end(); ++it) {
         if (it->get() == form) {
-            cont->forms.emplace_back(it->release());
+            cont->child.emplace_back(it->release());
             cont->sort();
-            forms.erase(it);
+            child.erase(it);
+            form->parent = cont;
             return;
         }
     }

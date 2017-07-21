@@ -48,3 +48,7 @@ Temporary Items
 *.o
 *.cbp
 *.depend
+*.a
+*.def
+*.layout
+mythos_test/*

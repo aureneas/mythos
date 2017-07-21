@@ -8,7 +8,7 @@
 #include <allegro5/allegro_font.h>
 
 #include "input.h"
-#include "../graphics/graphics.h"
+#include "../graphics/texture.h"
 
 namespace engine {
 
@@ -28,9 +28,17 @@ struct Widget {
     WidgetFunction func_mouse_up;
 
     Widget(Point, int = 0, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr);
-    virtual int update_event(ALLEGRO_EVENT*, Input*, int, int);
-    virtual bool in_bounds(int, int);
-    virtual void draw(int, int) = 0;
+    virtual int update_event(ALLEGRO_EVENT*, int, int);
+    virtual bool in_bounds(int, int) { return false; }
+    virtual void draw(Graphics*, int, int) = 0;
+};
+
+struct TextureWidget: public Widget {
+    Texture* texture;
+
+    TextureWidget(Texture*, Point, int = 0, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr);
+    bool in_bounds(int, int);
+    virtual void draw(Graphics*, int, int);
 };
 
 struct BitmapWidget: public Widget {
@@ -38,7 +46,7 @@ struct BitmapWidget: public Widget {
 
     BitmapWidget(ALLEGRO_BITMAP*, Point, int = 0, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr);
     bool in_bounds(int, int);
-    virtual void draw(int, int);
+    virtual void draw(Graphics*, int, int);
 };
 
 struct ButtonWidget: public BitmapWidget {
@@ -46,7 +54,7 @@ struct ButtonWidget: public BitmapWidget {
     bool pressed;
 
     ButtonWidget(ALLEGRO_BITMAP*, ALLEGRO_BITMAP*, Point, int = 0, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr);
-    void draw(int, int);
+    void draw(Graphics*, int, int);
 };
 
 struct TextWidget: public Widget {
@@ -56,7 +64,7 @@ struct TextWidget: public Widget {
 
     TextWidget(ALLEGRO_USTR*, ALLEGRO_FONT*, ALLEGRO_COLOR, Point, int = 0);
     virtual bool in_bounds(int, int);
-    virtual void draw(int, int);
+    virtual void draw(Graphics*, int, int);
 };
 
 struct MultilineTextWidget: public TextWidget {
@@ -65,7 +73,7 @@ struct MultilineTextWidget: public TextWidget {
 
     MultilineTextWidget(ALLEGRO_USTR*, ALLEGRO_FONT*, ALLEGRO_COLOR, Point, int, int = 0, int = 0);
     bool in_bounds(int, int);
-    void draw(int, int);
+    void draw(Graphics*, int, int);
 };
 
 template <typename N>
@@ -82,7 +90,7 @@ struct BarValueWidget: public Widget {
     float perc;
 
     BarValueWidget(N*, N*, ALLEGRO_COLOR, Point, int, int, int = 0);
-    void draw(int, int);
+    void draw(Graphics*, int, int);
 };
 
 struct BarValueWidget<int>;
@@ -95,8 +103,8 @@ struct Window: public Widget {
     WidgetList child;
 
     Window(Point);
-    int update_event(ALLEGRO_EVENT*, Input*, int, int);
-    virtual void draw(int, int);
+    int update_event(ALLEGRO_EVENT*, int, int);
+    virtual void draw(Graphics*, int, int);
 
     void insert(Widget*);
 };

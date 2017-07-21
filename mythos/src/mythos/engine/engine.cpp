@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 
 #include <allegro5/allegro_image.h>
@@ -53,7 +54,7 @@ void swap_state() {
 }
 
 
-void init(const char* config_file) {
+void init(char const* config_file) {
     // initialize Allegro
     if (!al_init())
         throw "Allegro library failed to initialize.";
@@ -89,11 +90,11 @@ void init(const char* config_file) {
         throw "Allegro display failed to initialize.";
 
     al_queue = new ALLEGRO_EVENT_QUEUE*[FRAMES_BEFORE_DROP];
-    for (int i = FRAMES_BEFORE_DROP; i > 0; --i)
+    for (int i = FRAMES_BEFORE_DROP - 1; i >= 0; --i)
         al_queue[i] = nullptr;
     al_timer_queue = nullptr;
 
-    for (int i = FRAMES_BEFORE_DROP; i > 0; --i) {
+    for (int i = FRAMES_BEFORE_DROP - 1; i >= 0; --i) {
         al_queue[i] = al_create_event_queue();
         if (!al_queue[i])
             throw "Allegro event queue failed to initialize.";
@@ -123,7 +124,7 @@ void run() {
 
     while (true) {
         if (al_is_event_queue_empty(al_timer_queue)) {
-            al_wait_for_event(al_timer_queue, &e);
+            al_wait_for_event(al_queue[frame_receive], &e);
             al_pause_event_queue(al_queue[frame_receive], true);
             frame_receive = (frame_receive + 1) % FRAMES_BEFORE_DROP;
             al_flush_event_queue(al_queue[frame_receive]);

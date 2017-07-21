@@ -12,8 +12,9 @@ int get_screen_width();
 int get_screen_height();
 
 State* get_state();
+void set_state(State*);
 
-void init();
+void init(char const*);
 void run();
 
 

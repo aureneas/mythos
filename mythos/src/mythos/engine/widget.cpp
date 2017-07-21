@@ -16,12 +16,12 @@ Widget::Widget(Point p, int f, WidgetFunction m_on, WidgetFunction m_off, Widget
     func_mouse_up = m_up;
 }
 
-int Widget::update_event(ALLEGRO_EVENT* e, Input* input, int x, int y) {
+int Widget::update_event(ALLEGRO_EVENT* e, int x, int y) {
     switch (e->type) {
         case ALLEGRO_EVENT_MOUSE_AXES:
             {
                 if (func_mouse_on != nullptr || func_mouse_down != nullptr || func_mouse_up != nullptr || func_mouse_off != nullptr) {
-                    if (!input->get_button(0) && !input->get_button(1)) {
+                    if (!Input::get_button(0) && !Input::get_button(1)) {
                         if (mouse_on && !in_bounds(e->mouse.x - x, e->mouse.y - y)) {
                             if (func_mouse_off) func_mouse_off(this);
                             mouse_on = false;
@@ -60,6 +60,19 @@ int Widget::update_event(ALLEGRO_EVENT* e, Input* input, int x, int y) {
 }
 
 
+TextureWidget::TextureWidget(Texture* t, Point p, int f, WidgetFunction m_on, WidgetFunction m_off, WidgetFunction m_down, WidgetFunction m_up) : Widget(p, f, m_on, m_off, m_down, m_up) {
+    texture = t;
+}
+
+bool TextureWidget::in_bounds(int x, int y) {
+    return texture->in_bounds(x - crd.x, y - crd.y);
+}
+
+void TextureWidget::draw(Graphics* g, int x, int y) {
+    texture->draw(g, x + crd.x, y + crd.y);
+}
+
+
 BitmapWidget::BitmapWidget(ALLEGRO_BITMAP* b, Point p, int f, WidgetFunction m_on, WidgetFunction m_off, WidgetFunction m_down, WidgetFunction m_up) : Widget(p, f, m_on, m_off, m_down, m_up) {
     bmp = b;
 }
@@ -68,8 +81,8 @@ bool BitmapWidget::in_bounds(int x, int y) {
     return (x >= crd.x && x <= crd.x + al_get_bitmap_width(bmp) && y >= crd.y && y <= crd.y + al_get_bitmap_height(bmp));
 }
 
-void BitmapWidget::draw(int x, int y) {
-    if (bmp)    draw_bitmap(bmp, x + crd.x, y + crd.y, flags);
+void BitmapWidget::draw(Graphics* g, int x, int y) {
+    if (bmp)    g->draw_bitmap(bmp, x + crd.x, y + crd.y, flags);
 }
 
 
@@ -78,11 +91,11 @@ ButtonWidget::ButtonWidget(ALLEGRO_BITMAP* b1, ALLEGRO_BITMAP* b2, Point p, int 
     pressed = false;
 }
 
-void ButtonWidget::draw(int x, int y) {
+void ButtonWidget::draw(Graphics* g, int x, int y) {
     if (pressed) {
-        if (pressed_bmp)    draw_bitmap(pressed_bmp, x + crd.x, y + crd.y, flags);
+        if (pressed_bmp)    g->draw_bitmap(pressed_bmp, x + crd.x, y + crd.y, flags);
     } else
-        BitmapWidget::draw(x, y);
+        BitmapWidget::draw(g, x, y);
 }
 
 
@@ -102,8 +115,8 @@ bool TextWidget::in_bounds(int x, int y) {
     return false;
 }
 
-void TextWidget::draw(int x, int y) {
-    if (ustr)   draw_ustr(font, tint, x + crd.x, y + crd.y, flags, ustr);
+void TextWidget::draw(Graphics* g, int x, int y) {
+    if (ustr)   g->draw_ustr(font, tint, x + crd.x, y + crd.y, flags, ustr);
 }
 
 
@@ -128,8 +141,8 @@ bool MultilineTextWidget::in_bounds(int x, int y) {
     return false;
 }
 
-void MultilineTextWidget::draw(int x, int y) {
-    if (ustr)   draw_multiline_ustr(font, tint, x + crd.x, y + crd.y, max_line_width, line_padding, flags, ustr);
+void MultilineTextWidget::draw(Graphics* g, int x, int y) {
+    if (ustr)   g->draw_multiline_ustr(font, tint, x + crd.x, y + crd.y, max_line_width, line_padding, flags, ustr);
 }
 
 
@@ -146,7 +159,7 @@ BarValueWidget<N>::BarValueWidget(N* c, N* m, ALLEGRO_COLOR t, Point p, int w, i
 }
 
 template <typename N>
-void BarValueWidget<N>::draw(int x, int y) {
+void BarValueWidget<N>::draw(Graphics* g, int x, int y) {
     if (*cur != cur_last || *max != max_last) {
         cur_last = *cur;
         max_last = *max;
@@ -155,7 +168,7 @@ void BarValueWidget<N>::draw(int x, int y) {
     // TODO make modifiable via flags
     int x_off = x + crd.x;
     int y_off = y + crd.y;
-    draw_filled_rectangle(x_off, y_off, x_off + (width * perc), y_off + height, tint);
+    g->draw_filled_rectangle(x_off, y_off, x_off + (width * perc), y_off + height, tint);
 }
 
 
@@ -163,19 +176,19 @@ Window::Window(Point p) : Widget(p) {
     // TODO other things here?
 }
 
-int Window::update_event(ALLEGRO_EVENT* e, Input* input, int x, int y) {
+int Window::update_event(ALLEGRO_EVENT* e, int x, int y) {
     if (in_bounds(e->mouse.x - x, e->mouse.y - y)) {
         for (WidgetList::reverse_iterator it = child.rbegin(); it != child.rend(); ++it) {
-            if ((*it)->update_event(e, input, x, y))
+            if ((*it)->update_event(e, x, y))
                 return 1;
         }
     }
     return 0;
 }
 
-void Window::draw(int x, int y) {
+void Window::draw(Graphics* g, int x, int y) {
     for (WidgetList::iterator it = child.begin(); it != child.end(); ++it)
-        (*it)->draw(x + crd.x, y + crd.y);
+        (*it)->draw(g, x + crd.x, y + crd.y);
 }
 
 void Window::insert(Widget* w) {

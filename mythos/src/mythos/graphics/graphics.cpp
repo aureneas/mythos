@@ -1,11 +1,54 @@
+#include <cmath>
+#include <unordered_map>
+#include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include "../../../include/mythos/engine/engine.h"
+#include "../../../include/mythos/graphics/texture.h"
+#include "../../../include/mythos/point.h"
+// TODO remove later
+#include <iostream>
 
+float y_scale;  // scale along the y-axis of screen
+Point* angle;   // angle of view, represented as Point
+ALLEGRO_TRANSFORM identity; // identity transform
+ALLEGRO_TRANSFORM x_shear;  // shear + scale for object along x-axis
+ALLEGRO_TRANSFORM y_shear;  // shear + scale for object along y-axis
+ALLEGRO_TRANSFORM horiz;
+
+void set_y_scale(float y) {
+    y_scale = y;
+}
+
+void set_angle(Point* p) {
+    angle = p;
+}
+
+
+Graphics::Graphics() {
+    lighting = al_create_bitmap(engine::get_screen_width(), engine::get_screen_height());
+    tint = al_map_rgba(0,0,0,0);
+}
 
 void Graphics::begin_frame() {
     al_set_target_bitmap(lighting);
     al_clear_to_color(tint);
     al_set_target_bitmap(al_get_backbuffer(al_get_current_display()));
+
+    al_identity_transform(&identity);
+    al_identity_transform(&x_shear);
+    float theta = atan2f(angle->y, angle->x);
+    float sin_f = sinf(theta);
+    float cos_f = cosf(theta);
+    //std::cout << "angle = (" << angle->x << ", " << angle->y << ")\n\ttheta = " << theta << "\n";
+    al_vertical_shear_transform(&x_shear, -atan2f(y_scale * cos_f, 1));
+    //std::cout << "\ttheta_x = " << -atan2f(y_scale * cosf(theta), sinf(theta)) << "\n";
+    al_scale_transform(&x_shear, sin_f, 1);
+    al_identity_transform(&y_shear);
+    al_vertical_shear_transform(&y_shear, -atan2f(y_scale * sin_f, 1));
+    //std::cout << "\ttheta_y = " << atan2f(y_scale * sinf(theta), cosf(theta)) << "\n";
+    al_scale_transform(&y_shear, -cos_f, 1);
+    al_identity_transform(&horiz);
+    al_build_transform(&horiz, 0, 0, 1, y_scale, theta);
 }
 
 void Graphics::end_frame() {
@@ -22,21 +65,28 @@ void Graphics::draw_lighting(ALLEGRO_BITMAP* bmp, int x, int y, int flags) {
 /**
  *  Draws the bitmap object to the screen.
  */
-void draw_bitmap(ALLEGRO_BITMAP* bmp, int x, int y, int flags) {
+void Graphics::draw_bitmap(ALLEGRO_BITMAP* bmp, int x, int y, int flags) {
     al_draw_bitmap(bmp, x, y, flags);
 }
 
 /**
  *  Draws the bitmap object to the screen, tinted by the color.
  */
-void draw_tinted_bitmap(ALLEGRO_BITMAP* bmp, ALLEGRO_COLOR tint, int x, int y, int flags) {
+void Graphics::draw_tinted_bitmap(ALLEGRO_BITMAP* bmp, ALLEGRO_COLOR tint, int x, int y, int flags) {
     al_draw_tinted_bitmap(bmp, tint, x, y, flags);
+}
+
+/**
+ *  Draws the bitmap object to the screen, scaled.
+ */
+void Graphics::draw_scaled_bitmap(ALLEGRO_BITMAP* bmp, int x, int y, int w, int h, int sw, int sh, int flags) {
+    al_draw_scaled_bitmap(bmp, 0, 0, w, h, x, y, sw, sh, flags);
 }
 
 /**
  *  Draws the bitmap object to the screen, rotated and scaled.
  */
-void draw_scaled_rotated_bitmap(ALLEGRO_BITMAP* bmp, float cx, float cy, float dx, float dy,
+void Graphics::draw_scaled_rotated_bitmap(ALLEGRO_BITMAP* bmp, float cx, float cy, float dx, float dy,
                                 float xscale, float yscale, float angle, int flags) {
     al_draw_scaled_rotated_bitmap(bmp, cx, cy, dx, dy, xscale, yscale, angle, flags);
 }
@@ -44,20 +94,71 @@ void draw_scaled_rotated_bitmap(ALLEGRO_BITMAP* bmp, float cx, float cy, float d
 /**
  *  Draws a filled rectangle with the chosen color.
  */
-void draw_filled_rectangle(int x, int y, int w, int h, ALLEGRO_COLOR tint) {
+void Graphics::draw_filled_rectangle(int x, int y, int w, int h, ALLEGRO_COLOR tint) {
     al_draw_filled_rectangle(x, y, w, h, tint);
 }
 
 /**
  *  Draws the USTR string object to the screen.
  */
-void draw_ustr(ALLEGRO_FONT* font, ALLEGRO_COLOR tint, int x, int y, int flags, ALLEGRO_USTR* ustr) {
+void Graphics::draw_ustr(ALLEGRO_FONT* font, ALLEGRO_COLOR tint, int x, int y, int flags, ALLEGRO_USTR* ustr) {
     al_draw_ustr(font, tint, x, y, flags, ustr);
 }
 
 /**
  *  Draws the USTR string object to the screen on multiple lines.
  */
-void draw_multiline_ustr(ALLEGRO_FONT* font, ALLEGRO_COLOR tint, int x, int y, int w, int h, int flags, ALLEGRO_USTR* ustr) {
+void Graphics::draw_multiline_ustr(ALLEGRO_FONT* font, ALLEGRO_COLOR tint, int x, int y, int w, int h, int flags, ALLEGRO_USTR* ustr) {
     al_draw_multiline_ustr(font, tint, x, y, w, h, flags, ustr);
+}
+
+
+
+BitmapTexture::BitmapTexture(ALLEGRO_BITMAP* b) {
+    bmp = b;
+}
+
+bool BitmapTexture::in_bounds(int x, int y) {
+    return (x >= 0 && y >= 0 && x <= al_get_bitmap_width(bmp) && y <= al_get_bitmap_height(bmp));
+}
+
+void BitmapTexture::draw(Graphics* g, int x, int y) {
+    g->draw_bitmap(bmp, x, y, 0);
+}
+
+
+VerticalTexture::VerticalTexture(ALLEGRO_BITMAP* b, bool a) : BitmapTexture(b) {
+    axis = a;
+}
+
+bool VerticalTexture::in_bounds(int x, int y) {
+    float xf = x, yf = y;
+
+    ALLEGRO_TRANSFORM trans;
+    al_copy_transform(&trans, (axis ? &x_shear : &y_shear));
+    al_invert_transform(&trans);
+    al_transform_coordinates(&trans, &xf, &yf);
+
+    return BitmapTexture::in_bounds((int)xf, (int)yf);
+}
+
+void VerticalTexture::draw(Graphics* g, int x, int y) {
+    ALLEGRO_TRANSFORM trans;
+    al_copy_transform(&trans, (axis ? &x_shear : &y_shear));
+    al_translate_transform(&trans, x, y);
+    al_use_transform(&trans);
+    g->draw_bitmap(bmp, 0, 0, 0);
+    al_use_transform(&identity);
+}
+
+
+HorizontalTexture::HorizontalTexture(ALLEGRO_BITMAP* b) : BitmapTexture(b) {}
+
+void HorizontalTexture::draw(Graphics* g, int x, int y) {
+    ALLEGRO_TRANSFORM trans;
+    al_copy_transform(&trans, &horiz);
+    al_translate_transform(&trans, x, y);
+    al_use_transform(&trans);
+    g->draw_bitmap(bmp, 0, 0, 0);
+    al_use_transform(&identity);
 }

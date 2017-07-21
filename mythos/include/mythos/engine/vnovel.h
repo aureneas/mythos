@@ -14,7 +14,7 @@ struct ChoiceWidget: public BitmapWidget {
     TextWidget text;
 
     ChoiceWidget(vnovel::Scene*, vnovel::Choice*, Point, int = 0);
-    void draw(int, int);
+    void draw(Graphics*, int, int);
 };
 
 struct SceneLayer: public Layer {
@@ -39,8 +39,8 @@ struct SceneLayer: public Layer {
     SceneLayer(vnovel::Scene*);
     ~SceneLayer();
     void update_frame();
-    int update_event(ALLEGRO_EVENT*, Input*, int = 0, int = 0);
-    void draw(int, int);
+    int update_event(ALLEGRO_EVENT*, int = 0, int = 0);
+    void draw(Graphics*, int, int);
 
     void set_scene(vnovel::Scene*);
     void advance();

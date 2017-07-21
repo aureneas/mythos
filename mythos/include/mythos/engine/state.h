@@ -13,7 +13,7 @@ struct Layer: public Window {
 
     Layer();
     void update_frame();
-    int update_event(ALLEGRO_EVENT*, Input*, int = 0, int = 0);
+    int update_event(ALLEGRO_EVENT*, int = 0, int = 0);
 
     void insert_animation(Animation*);
 };
@@ -22,12 +22,12 @@ typedef std::list<std::unique_ptr<Layer> >          LayerList;
 
 class State {
     protected:
-        Input input;
         LayerList layer_list;
     public:
         void update_frame();
         void update_event(ALLEGRO_EVENT*);
 
+        void insert_layer(Layer*);
         void remove_layer(Layer*);
 };
 

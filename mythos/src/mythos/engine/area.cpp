@@ -53,8 +53,8 @@ void AreaLayer::update_frame() {
 
         al_set_target_bitmap(graphics.lighting);
         al_set_blender(ALLEGRO_ADD, ALLEGRO_DST_COLOR, ALLEGRO_ZERO);
-        draw_bitmap(bmp_ground, 0, 0, 0);
-        draw_bitmap(bmp_shadow, 0, 0, 0);
+        graphics.draw_bitmap(bmp_ground, 0, 0, 0);
+        graphics.draw_bitmap(bmp_shadow, 0, 0, 0);
     }
 
     // draw silhouettes
@@ -69,8 +69,8 @@ void AreaLayer::update_frame() {
 
     al_set_target_bitmap(al_get_backbuffer(al_get_current_display()));
     al_set_blender(ALLEGRO_ADD, ALLEGRO_ZERO, ALLEGRO_INVERSE_SRC_COLOR);
-    draw_bitmap(graphics.lighting, 0, 0, 0);
-    draw_bitmap(bmp_silhouette, 0, 0, 0);
+    graphics.draw_bitmap(graphics.lighting, 0, 0, 0);
+    graphics.draw_bitmap(bmp_silhouette, 0, 0, 0);
     al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 }
 

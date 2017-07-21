@@ -15,12 +15,14 @@ class Input {
         static Point mouse;
         static std::vector<bool> buttons;
         static std::unordered_map<int, unsigned> keyboard;
-    public:
-        void update_frame();
-        int update_event(ALLEGRO_EVENT*);
 
-        unsigned get_key(int);
-        bool get_button(unsigned);
+        Input() {}
+    public:
+        static void update_frame();
+        static int update_event(ALLEGRO_EVENT*);
+
+        static unsigned get_key(int);
+        static bool get_button(unsigned);
 };
 
 

@@ -4,10 +4,15 @@
 #include <memory>
 #include <allegro5/allegro.h>
 
+#include "../graphics/texture.h"
 #include "volume.h"
 
 
+struct Container;
+
 struct Form {
+    Container* parent;
+    Texture* texture;
     Volume vol;
 };
 
@@ -19,10 +24,16 @@ struct LightSource: public Form {
 typedef std::vector<std::unique_ptr<Form> > ContainerFormList;
 
 struct Container: virtual public Form {
-    ContainerFormList forms;
+    ContainerFormList child;
     Point angle;               // angle of view, represented as Point
 
     void sort();
+
+    /**
+     *  Transfers form from this into cont.
+     *  @param cont     Container* to transfer form into
+     *  @param form     Form* to be transferred between this and cont
+     */
     void transfer(Container*, Form*);
 };
 

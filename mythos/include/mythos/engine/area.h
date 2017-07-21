@@ -7,8 +7,10 @@
 namespace engine {
 
 
-struct TextureFormWidget: public Widget {
+struct FormWidget: public Widget {
+    Form* form;
 
+    void draw(Graphics*, int, int);
 };
 
 struct AreaLayer: public Layer {

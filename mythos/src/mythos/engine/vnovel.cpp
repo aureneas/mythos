@@ -5,6 +5,20 @@
 namespace engine {
 
 
+ALLEGRO_BITMAP* SceneLayer::name_box;
+ALLEGRO_FONT*   SceneLayer::name_font;
+
+ALLEGRO_BITMAP* SceneLayer::text_box;
+ALLEGRO_FONT*   SceneLayer::text_font;
+ALLEGRO_COLOR   SceneLayer::text_color;
+
+ALLEGRO_BITMAP* SceneLayer::choice_box;
+ALLEGRO_BITMAP* SceneLayer::choice_mouseover;
+
+int             SceneLayer::edge_padding;
+int             SceneLayer::sprite_padding;
+
+
 
 ChoiceWidget::ChoiceWidget(vnovel::Scene* s, vnovel::Choice* c, Point p, int f) :
         BitmapWidget(SceneLayer::choice_box, p, f, wfunc_choicewidget_mouse_on, wfunc_choicewidget_mouse_off, wfunc_choicewidget_mouse_down, wfunc_choose_scene_option),
@@ -13,9 +27,9 @@ ChoiceWidget::ChoiceWidget(vnovel::Scene* s, vnovel::Choice* c, Point p, int f) 
     opt = c;
 }
 
-void ChoiceWidget::draw(int x, int y) {
-    BitmapWidget::draw(x, y);
-    text.draw(x + crd.x, y + crd.y);
+void ChoiceWidget::draw(Graphics* g, int x, int y) {
+    BitmapWidget::draw(g, x, y);
+    text.draw(g, x + crd.x, y + crd.y);
 }
 
 
@@ -35,18 +49,18 @@ SceneLayer::~SceneLayer() {
 void SceneLayer::update_frame() {
     int xpos = edge_padding;
     for (std::list<vnovel::Character>::iterator it = scene->chara[vnovel::LEFT].begin(); it != scene->chara[vnovel::LEFT].end(); ++it) {
-        draw_tinted_bitmap(it->bmp, it->tint, xpos, it->ypos, 0);
+        graphics.draw_tinted_bitmap(it->bmp, it->tint, xpos, it->ypos, 0);
         xpos += sprite_padding;
     }
     xpos = get_screen_width() - al_get_bitmap_width(scene->chara[vnovel::RIGHT].front().bmp) - edge_padding;
     for (std::list<vnovel::Character>::iterator it = scene->chara[vnovel::RIGHT].begin(); it != scene->chara[vnovel::RIGHT].end(); ++it) {
-        draw_tinted_bitmap(it->bmp, it->tint, xpos, it->ypos, 0);
+        graphics.draw_tinted_bitmap(it->bmp, it->tint, xpos, it->ypos, 0);
         xpos -= sprite_padding;
     }
 
     xpos = (get_screen_width() / 2) - (((sprite_padding * (scene->chara[vnovel::CENTER].size() - 1)) + al_get_bitmap_width(scene->chara[vnovel::CENTER].front().bmp)) / 2);
     for (std::list<vnovel::Character>::iterator it = scene->chara[vnovel::CENTER].begin(); it != scene->chara[vnovel::CENTER].end(); ++it) {
-        draw_tinted_bitmap(it->bmp, it->tint, xpos, it->ypos, 0);
+        graphics.draw_tinted_bitmap(it->bmp, it->tint, xpos, it->ypos, 0);
         xpos += sprite_padding;
     }
 
@@ -57,20 +71,20 @@ void SceneLayer::update_frame() {
     Layer::update_frame();
 }
 
-int SceneLayer::update_event(ALLEGRO_EVENT* e, Input* input, int x, int y) {
+int SceneLayer::update_event(ALLEGRO_EVENT* e, int x, int y) {
     if (scene->options.empty()) {
         if (e->type == ALLEGRO_EVENT_MOUSE_BUTTON_UP || e->type == ALLEGRO_EVENT_KEY_UP)
             advance();
     } else {
-        Layer::update_event(e, input, x, y);
+        Layer::update_event(e, x, y);
     }
     return 1;
 }
 
-void SceneLayer::draw(int x, int y) {
-    Layer::draw(x, y);
-    name_w.draw(crd.x + x, crd.y + y);
-    text_w.draw(crd.x + x, crd.y + y);
+void SceneLayer::draw(Graphics* g, int x, int y) {
+    Layer::draw(g, x, y);
+    name_w.draw(g, crd.x + x, crd.y + y);
+    text_w.draw(g, crd.x + x, crd.y + y);
 }
 
 void SceneLayer::set_scene(vnovel::Scene* s) {
