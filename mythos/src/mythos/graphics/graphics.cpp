@@ -10,6 +10,7 @@
 
 float y_scale;  // scale along the y-axis of screen
 Point* angle;   // angle of view, represented as Point
+static float theta; // angle of view (as last checked), represented in radians
 ALLEGRO_TRANSFORM identity; // identity transform
 ALLEGRO_TRANSFORM x_shear;  // shear + scale for object along x-axis
 ALLEGRO_TRANSFORM y_shear;  // shear + scale for object along y-axis
@@ -25,6 +26,8 @@ void set_angle(Point* p) {
 
 
 Graphics::Graphics() {
+    x_res = 1.0f;
+    y_res = 1.0f;
     lighting = al_create_bitmap(engine::get_screen_width(), engine::get_screen_height());
     tint = al_map_rgba(0,0,0,0);
 }
@@ -35,8 +38,9 @@ void Graphics::begin_frame() {
     al_set_target_bitmap(al_get_backbuffer(al_get_current_display()));
 
     al_identity_transform(&identity);
+    al_scale_transform(&identity, x_res, y_res);
     al_identity_transform(&x_shear);
-    float theta = atan2f(angle->y, angle->x);
+    theta = atan2f(angle->y, angle->x);
     float sin_f = sinf(theta);
     float cos_f = cosf(theta);
     //std::cout << "angle = (" << angle->x << ", " << angle->y << ")\n\ttheta = " << theta << "\n";
@@ -48,7 +52,7 @@ void Graphics::begin_frame() {
     //std::cout << "\ttheta_y = " << atan2f(y_scale * sinf(theta), cosf(theta)) << "\n";
     al_scale_transform(&y_shear, -cos_f, 1);
     al_identity_transform(&horiz);
-    al_build_transform(&horiz, 0, 0, 1, y_scale, theta);
+    al_build_transform(&horiz, 0, 0, 1, y_scale, theta + 3.14159f);
 }
 
 void Graphics::end_frame() {
@@ -114,6 +118,17 @@ void Graphics::draw_multiline_ustr(ALLEGRO_FONT* font, ALLEGRO_COLOR tint, int x
 
 
 
+bool CompositeTexture::in_bounds(int x, int y) {
+    for (std::vector<TextureDisplacement>::iterator it = texture.begin(); it != texture.end(); ++it)
+        it->texture->in_bounds(x - it->disp.x, y - it->disp.y);
+}
+
+void CompositeTexture::draw(Graphics* g, int x, int y) {
+    for (std::vector<TextureDisplacement>::iterator it = texture.begin(); it != texture.end(); ++it)
+        it->texture->draw(g, x + it->disp.x, y + it->disp.y);
+}
+
+
 BitmapTexture::BitmapTexture(ALLEGRO_BITMAP* b) {
     bmp = b;
 }
@@ -146,6 +161,7 @@ void VerticalTexture::draw(Graphics* g, int x, int y) {
     ALLEGRO_TRANSFORM trans;
     al_copy_transform(&trans, (axis ? &x_shear : &y_shear));
     al_translate_transform(&trans, x, y);
+    al_compose_transform(&trans, &identity);
     al_use_transform(&trans);
     g->draw_bitmap(bmp, 0, 0, 0);
     al_use_transform(&identity);
@@ -158,6 +174,23 @@ void HorizontalTexture::draw(Graphics* g, int x, int y) {
     ALLEGRO_TRANSFORM trans;
     al_copy_transform(&trans, &horiz);
     al_translate_transform(&trans, x, y);
+    al_compose_transform(&trans, &identity);
+    al_use_transform(&trans);
+    g->draw_bitmap(bmp, 0, 0, 0);
+    al_use_transform(&identity);
+}
+
+
+AngledTexture::AngledTexture(ALLEGRO_BITMAP* b, bool a, int h) : VerticalTexture(b, a) {
+    height = h;
+}
+
+void AngledTexture::draw(Graphics* g, int x, int y) {
+    ALLEGRO_TRANSFORM trans;
+    al_copy_transform(&trans, &horiz);
+    trans.m[axis ? 1 : 0][1] -= (float)height / al_get_bitmap_height(bmp); // TODO make this the variable in place of height
+    al_translate_transform(&trans, x, y);
+    al_compose_transform(&trans, &identity);
     al_use_transform(&trans);
     g->draw_bitmap(bmp, 0, 0, 0);
     al_use_transform(&identity);

@@ -9,6 +9,9 @@ struct Graphics {
     ALLEGRO_BITMAP* lighting;
     ALLEGRO_COLOR tint;
 
+    float x_res;
+    float y_res;
+
     Graphics();
     void begin_frame();
     void end_frame();

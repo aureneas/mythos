@@ -27,6 +27,7 @@ struct Polygon {
     Point center;
     VertexList vertex;
 
+    Polygon();
     Polygon(Polygon*);
     Polygon adjust(Point);
     bool intersect(Polygon*);
@@ -37,6 +38,7 @@ struct Volume {
     int z;
     int height;
 
+    Volume();
     Volume(Volume*);
     Volume adjust(Point, int);
     bool intersect(Volume*);

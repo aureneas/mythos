@@ -14,19 +14,22 @@ struct FormWidget: public Widget {
 };
 
 struct AreaLayer: public Layer {
+    int screen_buffer;
+
     ALLEGRO_BITMAP* bmp_ground;
     ALLEGRO_BITMAP* bmp_shadow;
     ALLEGRO_BITMAP* bmp_silhouette;
     ALLEGRO_TRANSFORM trans;
 
-    Area* area;
+    AreaWrapper wrap;
 
     Point center;
     float top_view;
 
-    AreaLayer(Area*);
+    AreaLayer();
     void update_frame();
 
+    ALLEGRO_TRANSFORM get_crd_transform();
     void set_center(Point);
     void adjust_center(Point);
 };

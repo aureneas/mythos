@@ -9,6 +9,8 @@ Point direction_to_point(Direction d) {
 }
 
 
+Polygon::Polygon() : center{0, 0} {}
+
 Polygon::Polygon(Polygon* p) {
     center = p->center;
     for (std::vector<Point>::iterator it = p->vertex.begin(); it != p->vertex.end(); ++it)
@@ -27,6 +29,9 @@ bool Polygon::intersect(Polygon* p) {
     // TODO later
     return false;
 }
+
+
+Volume::Volume() {}
 
 Volume::Volume(Volume* v) : base(&v->base) {
     z = v->z;

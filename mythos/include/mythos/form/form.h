@@ -28,6 +28,8 @@ struct Container: virtual public Form {
     Point angle;               // angle of view, represented as Point
 
     void sort();
+    virtual void insert(Form*);
+    virtual void remove(Form*);
 
     /**
      *  Transfers form from this into cont.
