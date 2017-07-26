@@ -65,11 +65,12 @@ TextureWidget::TextureWidget(Texture* t, Point p, int f, WidgetFunction m_on, Wi
 }
 
 bool TextureWidget::in_bounds(int x, int y) {
-    return texture->in_bounds(x - crd.x, y - crd.y);
+    if (texture)    return texture->in_bounds(x - crd.x, y - crd.y);
+    return false;
 }
 
 void TextureWidget::draw(Graphics* g, int x, int y) {
-    texture->draw(g, x + crd.x, y + crd.y);
+    if (texture)    texture->draw(g, x + crd.x, y + crd.y);
 }
 
 

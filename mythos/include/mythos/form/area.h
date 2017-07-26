@@ -5,24 +5,35 @@
 #include "form.h"
 
 
-typedef std::list<LightSource*> LightSourceList;
+struct Tile {
+    Texture* texture;
+    int elevation;
+};
 
 struct Area: public Container {
-    Texture*** tiles;
+    Tile** tile;
+    unsigned size;  // size of tile array
+    unsigned width; // width of tiles
 };
 
 
-
 typedef std::multimap<int, Form*> AWInnerFormList;
-typedef std::multimap<int, AWInnerFormList> AWFormList;
+typedef std::map<int, AWInnerFormList> AWFormList;
+typedef std::multimap<int, Tile*> AWInnerTileList;
+typedef std::map<int, AWInnerTileList> AWTileList;
 
 struct AreaWrapper {
     Area* area;
     Area* prox[8];
 
     AWFormList form;
+    AWTileList tile;
 
-    AWFormList::iterator find(int);
+    AreaWrapper();
+    AreaWrapper(Area*);
+    void set_area(Area*);
+    void push(Area*);
+    void reset();
 };
 
 
