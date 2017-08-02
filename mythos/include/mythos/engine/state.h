@@ -12,8 +12,8 @@ struct Layer: public Window {
     AnimationList anim_list;
 
     Layer();
-    void update_frame();
-    int update_event(ALLEGRO_EVENT*, int = 0, int = 0);
+    virtual void update_frame();
+    virtual int update_event(ALLEGRO_EVENT*, int = 0, int = 0);
 
     void insert_animation(Animation*);
 };

@@ -34,22 +34,35 @@ struct BitmapTexture: public Texture {
     virtual void draw(Graphics*, int, int);
 };
 
-struct VerticalTexture: public BitmapTexture {
-    bool axis;      // true if x-axis, false if y-axis
-    VerticalTexture(ALLEGRO_BITMAP*, bool);
+struct TransformTexture: public BitmapTexture {
+    TransformTexture(ALLEGRO_BITMAP*);
+    virtual void compose_transform(ALLEGRO_TRANSFORM*) = 0;
     bool in_bounds(int, int);
     void draw(Graphics*, int, int);
 };
 
-struct HorizontalTexture: public BitmapTexture {
+struct VerticalTexture: public TransformTexture {
+    bool axis;      // true if x-axis, false if y-axis
+    VerticalTexture(ALLEGRO_BITMAP*, bool);
+    virtual void compose_transform(ALLEGRO_TRANSFORM*);
+};
+
+struct HorizontalTexture: public TransformTexture {
     HorizontalTexture(ALLEGRO_BITMAP*);
-    void draw(Graphics*, int, int);
+    void compose_transform(ALLEGRO_TRANSFORM*);
 };
 
 struct AngledTexture: public VerticalTexture {
     int height;
     AngledTexture(ALLEGRO_BITMAP*, bool, int);
-    void draw(Graphics*, int, int);
+    void compose_transform(ALLEGRO_TRANSFORM*);
+};
+
+struct LightTexture: public Texture {
+    int strength;
+    ALLEGRO_COLOR tint;
+    LightTexture(ALLEGRO_COLOR, int);
+    void draw(Graphics*, int, int) {}
 };
 
 #endif // MYTHOS_TEXTURE_H

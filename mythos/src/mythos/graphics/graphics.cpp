@@ -56,6 +56,8 @@ void Graphics::begin_frame() {
         al_scale_transform(&y_shear, -cos_f, 1);
         al_build_transform(&horiz, 0, 0, 1, y_scale, theta + 3.14159f);
     }
+
+    al_use_transform(&identity);
 }
 
 void Graphics::end_frame() {
@@ -146,42 +148,48 @@ void BitmapTexture::draw(Graphics* g, int x, int y) {
 }
 
 
-VerticalTexture::VerticalTexture(ALLEGRO_BITMAP* b, bool a) : BitmapTexture(b) {
-    axis = a;
-}
+TransformTexture::TransformTexture(ALLEGRO_BITMAP* b) : BitmapTexture(b) {}
 
-bool VerticalTexture::in_bounds(int x, int y) {
+bool TransformTexture::in_bounds(int x, int y) {
     float xf = x, yf = y;
 
     ALLEGRO_TRANSFORM trans;
-    al_copy_transform(&trans, (axis ? &x_shear : &y_shear));
+    compose_transform(&trans);
     al_invert_transform(&trans);
     al_transform_coordinates(&trans, &xf, &yf);
 
     return BitmapTexture::in_bounds((int)xf, (int)yf);
 }
 
-void VerticalTexture::draw(Graphics* g, int x, int y) {
+void TransformTexture::draw(Graphics* g, int x, int y) {
     ALLEGRO_TRANSFORM trans;
-    al_copy_transform(&trans, (axis ? &x_shear : &y_shear));
+    al_identity_transform(&trans);
+    compose_transform(&trans);
     al_translate_transform(&trans, x, y);
-    al_compose_transform(&trans, al_get_current_transform());
+
+    ALLEGRO_TRANSFORM prev;
+    al_copy_transform(&prev, al_get_current_transform());
+    al_compose_transform(&trans, &prev);
+
     al_use_transform(&trans);
     g->draw_bitmap(bmp, 0, 0, 0);
-    al_use_transform(&identity);
+    al_use_transform(&prev);
 }
 
 
-HorizontalTexture::HorizontalTexture(ALLEGRO_BITMAP* b) : BitmapTexture(b) {}
+VerticalTexture::VerticalTexture(ALLEGRO_BITMAP* b, bool a) : TransformTexture(b) {
+    axis = a;
+}
 
-void HorizontalTexture::draw(Graphics* g, int x, int y) {
-    ALLEGRO_TRANSFORM trans;
-    al_copy_transform(&trans, &horiz);
-    al_translate_transform(&trans, x, y);
-    al_compose_transform(&trans, al_get_current_transform());
-    al_use_transform(&trans);
-    g->draw_bitmap(bmp, 0, 0, 0);
-    al_use_transform(&identity);
+void VerticalTexture::compose_transform(ALLEGRO_TRANSFORM* trans) {
+    al_compose_transform(trans, (axis ? &x_shear : &y_shear));
+}
+
+
+HorizontalTexture::HorizontalTexture(ALLEGRO_BITMAP* b) : TransformTexture(b) {}
+
+void HorizontalTexture::compose_transform(ALLEGRO_TRANSFORM* trans) {
+    al_compose_transform(trans, &horiz);
 }
 
 
@@ -189,13 +197,15 @@ AngledTexture::AngledTexture(ALLEGRO_BITMAP* b, bool a, int h) : VerticalTexture
     height = h;
 }
 
-void AngledTexture::draw(Graphics* g, int x, int y) {
-    ALLEGRO_TRANSFORM trans;
-    al_copy_transform(&trans, &horiz);
-    trans.m[axis ? 1 : 0][1] -= (float)height / al_get_bitmap_height(bmp); // TODO make this the variable in place of height
-    al_translate_transform(&trans, x, y);
-    al_compose_transform(&trans, al_get_current_transform());
-    al_use_transform(&trans);
-    g->draw_bitmap(bmp, 0, 0, 0);
-    al_use_transform(&identity);
+void AngledTexture::compose_transform(ALLEGRO_TRANSFORM* trans) {
+    ALLEGRO_TRANSFORM angle_t;
+    al_copy_transform(&angle_t, &horiz);
+    angle_t.m[axis ? 1 : 0][1] -= (float)height / al_get_bitmap_height(bmp);
+    al_compose_transform(trans, &angle_t);
+}
+
+
+LightTexture::LightTexture(ALLEGRO_COLOR t, int s) {
+    strength = s;
+    tint = t;
 }
