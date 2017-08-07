@@ -7,6 +7,13 @@
 namespace engine {
 
 
+struct TileWidget: public Widget {
+    Tile* tile;
+
+    TileWidget(Tile*, Point);
+    void draw(Graphics*, int, int);
+};
+
 struct FormWidget: public Widget {
     Form* form;
 
@@ -15,26 +22,28 @@ struct FormWidget: public Widget {
 };
 
 
-typedef std::list<LightSource*> LightSourceList;
+enum AREA_LAYER_INDICES : int {
+    TOP = 0,
+    BOTTOM = 1,
+    LEFT = 2,
+    RIGHT = 3
+};
 
 struct AreaLayer: public Layer {
     int screen_buffer;
-
-    Layer* tile_layer;
-    ALLEGRO_BITMAP* bmp_ground;
-    ALLEGRO_BITMAP* bmp_shadow;
-    ALLEGRO_BITMAP* bmp_silhouette;
+    WidgetList::iterator tile_end;
 
     AreaWrapper wrap;
-    LightSourceList light;
 
     Point center;
     float top_view;
 
+    int indices[4];
+
     AreaLayer();
     void update_frame();
-
     ALLEGRO_TRANSFORM get_crd_transform();
+    void push(int, int, int, int);
     void set_center(Point);
     void adjust_center(Point);
 };

@@ -21,9 +21,9 @@ struct LightSource: public Form {
     ALLEGRO_COLOR tint;     // tint of light
 };
 
-typedef std::vector<std::unique_ptr<Form> > ContainerFormList;
 
-struct Container: virtual public Form {
+typedef std::vector<std::unique_ptr<Form> > ContainerFormList;
+struct Container {
     ContainerFormList child;
     Point angle;               // angle of view, represented as Point
 

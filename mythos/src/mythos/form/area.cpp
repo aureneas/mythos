@@ -45,20 +45,20 @@ void AreaWrapper::push(Area* a) {
                 it1->second.emplace(k2, &a->tile[i][j]);
         }
     }
-    std::cout << "\n";
+    //std::cout << "\n";
 
     for (ContainerFormList::iterator it = a->child.begin(); it != a->child.end(); ++it) {
         Form* f = it->get();
-        int k1 = -(f->vol.base.center * angle);
+        int k1 = -(f->vol.base.center * angle) - f->vol.z;
         int k2 = f->vol.base.center * nrangle;
-        std::cout << "(" << k1 << ", " << k2 << ") -> " << f << "\n";
+        //std::cout << "(" << k1 << ", " << k2 << ") -> " << f << "\n";
         AWFormList::iterator it1 = form.find(k1);
         if (it1 == form.end())
             form.emplace(k1, AWInnerFormList({{k2, f}}));
         else
             it1->second.emplace(k2, f);
     }
-    std::cout << "\n";
+    //std::cout << "\n";
 }
 
 void AreaWrapper::reset() {
