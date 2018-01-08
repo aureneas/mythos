@@ -1,5 +1,5 @@
 #include <random>
-#include "../../include/mythos/random.h"
+#include "../../../include/mythos/utility/random.h"
 
 static std::default_random_engine generator;
 

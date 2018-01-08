@@ -2,17 +2,18 @@
 #include <queue>
 #include <functional>
 
-#include "../../../include/mythos/engine/area.h"
 #include "../../../include/mythos/engine/engine.h"
+#include "../../../include/mythos/form/engine.h"
 
 // TODO delete later
 #include <iostream>
 
 namespace engine {
 
+
 struct comp_form_z {
     operator()(Form*& f1, Form*& f2) {
-        return (f1->vol.z < f2->vol.z);
+        return (f1->vol->crd.z < f2->vol->crd.z);
     }
 };
 
@@ -33,6 +34,12 @@ void TileWidget::draw(Graphics* g, int x, int y) {
 
 FormWidget::FormWidget(Form* f, Point p) : Widget(p) {
     form = f;
+}
+
+bool FormWidget::in_bounds(int x, int y) {
+	if (form->texture)
+		return form->texture->in_bounds(x, y);
+	return false;
 }
 
 void FormWidget::draw(Graphics* g, int x, int y) {
@@ -87,7 +94,7 @@ void AreaLayer::push(int side_top, int side_bottom, int side_left, int side_righ
             //std::cout << "    (" << tt1->first << ", " << tt2->first << ") -> (" << x_crd << ", " << y_crd << ") -> ";
             al_transform_coordinates(&crd_to_screen, &x_crd, &y_crd);
             //std::cout << "(" << x_crd << ", " << y_crd << ")\n";
-            child.emplace(tile_end, new TileWidget(tt2->second, Point{ round(x_crd), round(y_crd) - tt2->second->elevation }));
+            child.emplace(tile_end, new TileWidget(tt2->second, Point{ (int)roundf(x_crd), (int)roundf(y_crd) - tt2->second->elevation }));
         }
     }
 
@@ -96,7 +103,7 @@ void AreaLayer::push(int side_top, int side_bottom, int side_left, int side_righ
     for (AWFormList::iterator it1 = wrap.form.lower_bound(side_top); it1 != it1_end; ++it1) {
         while (cur != child.end()) {
             if (FormWidget* fw = dynamic_cast<FormWidget*>(cur->get())) {
-                if ((fw->form->vol.base.center * angle) > it1->first + fw->form->vol.z)
+                if ((fw->form->vol->crd * angle) > it1->first + fw->form->vol->crd.z)
                     break;
             }
             ++cur;
@@ -108,10 +115,10 @@ void AreaLayer::push(int side_top, int side_bottom, int side_left, int side_righ
             sort_by_z.push(it2->second);
         while (!sort_by_z.empty()) {
             Form* f = sort_by_z.top();
-            x_crd = f->vol.base.center.x;
-            y_crd = f->vol.base.center.y;
+            x_crd = f->vol->crd.x;
+            y_crd = f->vol->crd.y;
             al_transform_coordinates(&crd_to_screen, &x_crd, &y_crd);
-            child.emplace(cur, new FormWidget(f, Point{ round(x_crd), round(y_crd) - f->vol.z - f->vol.height }));
+            child.emplace(cur, new FormWidget(f, Point{ (int)roundf(x_crd), (int)roundf(y_crd) - f->vol->crd.z - f->vol->dim.z }));
             if (tile_end == child.end())
                 --tile_end;
             //std::cout << "(" << x_crd << ", " << y_crd << ") -> ";
@@ -122,9 +129,6 @@ void AreaLayer::push(int side_top, int side_bottom, int side_left, int side_righ
 }
 
 void AreaLayer::set_center(Point p) {
-    set_angle(&wrap.area->angle);
-    set_y_scale(top_view);
-
     center = p;
     child.clear();
     tile_end = child.begin();
@@ -171,7 +175,7 @@ void AreaLayer::adjust_center(Point p) {
     al_transform_coordinates(&crd_to_screen, &x1, &y1);
     al_transform_coordinates(&crd_to_screen, &x2, &y2);
     //std::cout << "((" << x1 << ", " << y1 << "), (" << x2 << ", " << y2 << ")) -> ";
-    Point dp = { round(x1) - round(x2), round(y1) - round(y2) };
+    Point dp = { (int)(roundf(x1) - roundf(x2)), (int)(roundf(y1) - roundf(y2)) };
     //std::cout << "<" << dp.x << ", " << dp.y << ">\n";
     center += p;
 
@@ -224,7 +228,6 @@ void AreaLayer::adjust_center(Point p) {
     indices[LEFT] = left_side;
     indices[RIGHT] = right_side;
 }
-
 
 
 

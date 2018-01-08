@@ -1,8 +1,8 @@
 #ifndef MYTHOS_AREALAYER_H
 #define MYTHOS_AREALAYER_H
 
-#include "state.h"
-#include "../form/area.h"
+#include "../engine/state.h"
+#include "area.h"
 
 namespace engine {
 
@@ -18,6 +18,7 @@ struct FormWidget: public Widget {
     Form* form;
 
     FormWidget(Form*, Point);
+    bool in_bounds(int, int);
     void draw(Graphics*, int, int);
 };
 
@@ -42,10 +43,10 @@ struct AreaLayer: public Layer {
 
     AreaLayer();
     void update_frame();
-    ALLEGRO_TRANSFORM get_crd_transform();
-    void push(int, int, int, int);
-    void set_center(Point);
-    void adjust_center(Point);
+    ALLEGRO_TRANSFORM get_crd_transform();	// constructs transformation from area coordinates to screen coordinates
+    void push(int, int, int, int);			// inserts all objects in rectangle indicated by four values
+    void set_center(Point);					// sets the center of view
+    void adjust_center(Point);				// adjusts the center of view
 };
 
 

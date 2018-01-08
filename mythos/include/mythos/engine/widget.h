@@ -4,97 +4,54 @@
 #include <forward_list>
 #include <list>
 #include <memory>
+#include <unordered_map>
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 
-#include "input.h"
-#include "../graphics/texture.h"
+#include "texture.h"
+
+
+// TODO adjust to avoid collisions in hashmap
+// TODO event for loss of focus?
+#define MYTHOS_EVENT_NULL					ALLEGRO_GET_EVENT_TYPE('N', 'U', 'L', 'L')
+#define MYTHOS_EVENT_MOUSE_ENTER_WIDGET		ALLEGRO_GET_EVENT_TYPE('E', 'n', 't', 'W')
+#define MYTHOS_EVENT_MOUSE_LEAVE_WIDGET		ALLEGRO_GET_EVENT_TYPE('L', 'e', 'a', 'W')
+#define MYTHOS_EVENT_UNFOCUS_WIDGET			ALLEGRO_GET_EVENT_TYPE('U', 'n', 'f', 'W')
+
 
 namespace engine {
 
 
 struct Widget;
 
-typedef void (*WidgetFunction)(Widget*);
+typedef int (*WidgetFunction)(Widget*, ALLEGRO_EVENT*);
+
+typedef std::unordered_map<ALLEGRO_EVENT_TYPE, WidgetFunction> WidgetEventMap;
+
 
 struct Widget {
     Point crd;
     int flags;
 
-    bool mouse_on;
-    WidgetFunction func_mouse_on;
-    WidgetFunction func_mouse_off;
-    WidgetFunction func_mouse_down;
-    WidgetFunction func_mouse_up;
+    WidgetEventMap events;
 
-    Widget(Point, int = 0, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr);
+    Widget(Point, int = 0);
+    void set_event(ALLEGRO_EVENT_TYPE, WidgetFunction);
+
     virtual int update_event(ALLEGRO_EVENT*, int, int);
     virtual bool in_bounds(int, int) { return false; }
     virtual void draw(Graphics*, int, int) = 0;
 };
 
+
 struct TextureWidget: public Widget {
     Texture* texture;
 
-    TextureWidget(Texture*, Point, int = 0, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr);
+    TextureWidget(Texture*, Point, int = 0);
     bool in_bounds(int, int);
     virtual void draw(Graphics*, int, int);
 };
-
-struct BitmapWidget: public Widget {
-    ALLEGRO_BITMAP* bmp;
-
-    BitmapWidget(ALLEGRO_BITMAP*, Point, int = 0, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr);
-    bool in_bounds(int, int);
-    virtual void draw(Graphics*, int, int);
-};
-
-struct ButtonWidget: public BitmapWidget {
-    ALLEGRO_BITMAP* pressed_bmp;
-    bool pressed;
-
-    ButtonWidget(ALLEGRO_BITMAP*, ALLEGRO_BITMAP*, Point, int = 0, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr, WidgetFunction = nullptr);
-    void draw(Graphics*, int, int);
-};
-
-struct TextWidget: public Widget {
-    ALLEGRO_USTR* ustr;
-    ALLEGRO_FONT* font;
-    ALLEGRO_COLOR tint;
-
-    TextWidget(ALLEGRO_USTR*, ALLEGRO_FONT*, ALLEGRO_COLOR, Point, int = 0);
-    virtual bool in_bounds(int, int);
-    virtual void draw(Graphics*, int, int);
-};
-
-struct MultilineTextWidget: public TextWidget {
-    int max_line_width;
-    int line_padding;
-
-    MultilineTextWidget(ALLEGRO_USTR*, ALLEGRO_FONT*, ALLEGRO_COLOR, Point, int, int = 0, int = 0);
-    bool in_bounds(int, int);
-    void draw(Graphics*, int, int);
-};
-
-template <typename N>
-struct BarValueWidget: public Widget {
-    ALLEGRO_COLOR tint;
-
-    N* cur;
-    N cur_last;
-    N* max;
-    N max_last;
-
-    int width;
-    int height;
-    float perc;
-
-    BarValueWidget(N*, N*, ALLEGRO_COLOR, Point, int, int, int = 0);
-    void draw(Graphics*, int, int);
-};
-
-struct BarValueWidget<int>;
-struct BarValueWidget<unsigned>;
 
 
 typedef std::list<std::unique_ptr<Widget> > WidgetList;
@@ -104,10 +61,18 @@ struct Window: public Widget {
 
     Window(Point);
     int update_event(ALLEGRO_EVENT*, int, int);
+    bool in_bounds(int, int);
     virtual void draw(Graphics*, int, int);
 
     void insert(Widget*);
 };
+
+
+Widget* get_mouse_on();
+void set_mouse_on(Widget*, ALLEGRO_EVENT*);
+
+Widget* get_mouse_focus();
+void set_mouse_focus(Widget*, ALLEGRO_EVENT*);
 
 
 }

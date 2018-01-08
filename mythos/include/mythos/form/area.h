@@ -6,14 +6,14 @@
 
 
 struct Tile {
-    Texture* texture;
-    int elevation;
+	Texture*	texture;
+	int			elevation;
 };
 
 struct Area: public Container {
-    Tile** tile;
-    unsigned size;  // size of tile array
-    unsigned width; // width of tiles
+	Tile** tile;
+	unsigned size;				// size of tile array
+	unsigned width;				// width of tiles
 };
 
 
@@ -23,17 +23,19 @@ typedef std::multimap<int, Tile*> AWInnerTileList;
 typedef std::map<int, AWInnerTileList> AWTileList;
 
 struct AreaWrapper {
-    Area* area;
-    Area* prox[8];
+	Point angle;
 
-    AWFormList form;
-    AWTileList tile;
+	Area* area;
+	Area* prox[8];
 
-    AreaWrapper();
-    AreaWrapper(Area*);
-    void set_area(Area*);
-    void push(Area*);
-    void reset();
+	AWFormList form;
+	AWTileList tile;
+
+	AreaWrapper();
+	AreaWrapper(Area*);
+	void set_area(Area*);
+	void push(Area*, int, int);
+	void reset();
 };
 
 

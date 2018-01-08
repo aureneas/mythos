@@ -1,31 +1,12 @@
-#include "main.h"
+#include "include/mythos/mythos.h"
+#include "include/debug/debug.h"
 
-// a sample exported function
-void DLL_EXPORT SomeFunction(const LPCSTR sometext)
-{
-    MessageBoxA(0, sometext, "DLL Message", MB_OK | MB_ICONINFORMATION);
-}
+int main() {
+	engine::init_allegro();
+	engine::init("config.ini");
 
-extern "C" DLL_EXPORT BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
-{
-    switch (fdwReason)
-    {
-        case DLL_PROCESS_ATTACH:
-            // attach to process
-            // return FALSE to fail DLL load
-            break;
+	engine::set_state(new engine::DebugState());
 
-        case DLL_PROCESS_DETACH:
-            // detach from process
-            break;
-
-        case DLL_THREAD_ATTACH:
-            // attach to thread
-            break;
-
-        case DLL_THREAD_DETACH:
-            // detach from thread
-            break;
-    }
-    return TRUE; // succesful
+	engine::run();
+	engine::destroy_allegro();
 }

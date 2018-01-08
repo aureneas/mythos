@@ -1,7 +1,7 @@
 #ifndef MYTHOS_STATE_H
 #define MYTHOS_STATE_H
 
-#include "../animation.h"
+#include "animation.h"
 #include "widget.h"
 
 namespace engine {

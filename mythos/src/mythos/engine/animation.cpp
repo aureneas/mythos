@@ -1,4 +1,4 @@
-#include "../../include/mythos/animation.h"
+#include "../../../include/mythos/engine/animation.h"
 
 
 bool JointAnimation::update_frame() {

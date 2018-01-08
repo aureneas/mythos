@@ -4,10 +4,11 @@
 #include <forward_list>
 #include <list>
 #include <memory>
+
 #include <allegro5/allegro.h>
 
-#include "point.h"
-#include "random.h"
+#include "../utility/point.h"
+#include "../utility/random.h"
 
 struct Animation {
     /**

@@ -3,27 +3,13 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include "../../../include/mythos/engine/engine.h"
-#include "../../../include/mythos/graphics/texture.h"
-#include "../../../include/mythos/point.h"
+#include "../../../include/mythos/engine/texture.h"
+#include "../../../include/mythos/utility/point.h"
 // TODO remove later
 #include <iostream>
 
-float y_scale;  // scale along the y-axis of screen
-Point* angle;   // angle of view, represented as Point
-static float theta; // angle of view (as last checked), represented in radians
-ALLEGRO_TRANSFORM identity; // identity transform
-ALLEGRO_TRANSFORM x_shear;  // shear + scale for object along x-axis
-ALLEGRO_TRANSFORM y_shear;  // shear + scale for object along y-axis
-ALLEGRO_TRANSFORM horiz;
 
-void set_y_scale(float y) {
-    y_scale = y;
-}
-
-void set_angle(Point* p) {
-    angle = p;
-}
-
+ALLEGRO_TRANSFORM identity;
 
 Graphics::Graphics() {
     x_res = 1.0f;
@@ -39,35 +25,11 @@ void Graphics::begin_frame() {
 
     al_identity_transform(&identity);
     al_scale_transform(&identity, x_res, y_res);
-    al_identity_transform(&x_shear);
-    al_identity_transform(&y_shear);
-    al_identity_transform(&horiz);
-
-    if (angle) {
-        theta = atan2f(angle->y, angle->x);
-        float sin_f = sinf(theta);
-        float cos_f = cosf(theta);
-        //std::cout << "angle = (" << angle->x << ", " << angle->y << ")\n\ttheta = " << theta << "\n";
-        al_vertical_shear_transform(&x_shear, -atan2f(y_scale * cos_f, 1));
-        //std::cout << "\ttheta_x = " << -atan2f(y_scale * cosf(theta), sinf(theta)) << "\n";
-        al_scale_transform(&x_shear, sin_f, 1);
-        al_vertical_shear_transform(&y_shear, -atan2f(y_scale * sin_f, 1));
-        //std::cout << "\ttheta_y = " << atan2f(y_scale * sinf(theta), cosf(theta)) << "\n";
-        al_scale_transform(&y_shear, -cos_f, 1);
-        al_build_transform(&horiz, 0, 0, 1, y_scale, theta + 3.14159f);
-    }
-
     al_use_transform(&identity);
 }
 
 void Graphics::end_frame() {
     draw_bitmap(lighting, 0, 0, 0);
-}
-
-void Graphics::draw_lighting(ALLEGRO_BITMAP* bmp, int x, int y, int flags) {
-    al_set_target_bitmap(lighting);
-    draw_bitmap(bmp, x, y, flags);
-    al_set_target_bitmap(al_get_backbuffer(al_get_current_display()));
 }
 
 
@@ -124,12 +86,14 @@ void Graphics::draw_multiline_ustr(ALLEGRO_FONT* font, ALLEGRO_COLOR tint, int x
 
 
 bool CompositeTexture::in_bounds(int x, int y) {
-    for (std::vector<TextureDisplacement>::iterator it = texture.begin(); it != texture.end(); ++it)
-        it->texture->in_bounds(x - it->disp.x, y - it->disp.y);
+    for (std::vector<TextureDisplacement>::iterator it = texture.begin(); it != texture.end(); ++it) {
+        if (it->texture->in_bounds(x - it->disp.x, y - it->disp.y))
+			return true;
+    }
+    return false;
 }
 
 void CompositeTexture::draw(Graphics* g, int x, int y) {
-    // TODO preserve transformation
     for (std::vector<TextureDisplacement>::iterator it = texture.begin(); it != texture.end(); ++it)
         it->texture->draw(g, x + it->disp.x, y + it->disp.y);
 }
@@ -148,7 +112,55 @@ void BitmapTexture::draw(Graphics* g, int x, int y) {
 }
 
 
-TransformTexture::TransformTexture(ALLEGRO_BITMAP* b) : BitmapTexture(b) {}
+TextTexture::TextTexture(ALLEGRO_USTR* t, ALLEGRO_FONT* f, ALLEGRO_COLOR c) {
+	text = t;
+	font = f;
+	color = c;
+	evaluate_text();
+}
+
+bool TextTexture::in_bounds(int x, int y) {
+	return (x >= 0 && y <= 0 && x <= line_width && y <= line_height);
+}
+
+void TextTexture::draw(Graphics* g, int x, int y) {
+	g->draw_ustr(font, color, x, y, 0, text);
+}
+
+void TextTexture::evaluate_text() {
+	line_width = al_get_ustr_width(font, text);
+	line_height = al_get_font_line_height(font);
+}
+
+
+MultilineTextTexture::MultilineTextTexture(ALLEGRO_USTR* t, ALLEGRO_FONT* f, ALLEGRO_COLOR c, int w, int h) : TextTexture(t, f, c) {
+	line_width = w;
+	line_height = h;
+	evaluate_text();
+}
+
+bool MultilineTextTexture::in_bounds(int x, int y) {
+	return (x >= 0 && y >= 0 && x <= line_width && y <= (line_height * line_num));
+}
+
+void MultilineTextTexture::draw(Graphics* g, int x, int y) {
+	g->draw_multiline_ustr(font, color, x, y, line_width, line_height, 0, text);
+}
+
+bool count_ustr_lines(int num_lines, const ALLEGRO_USTR* line, void* extra) {
+    int* ptr = (int*)extra;
+    *ptr = num_lines;
+    return true;
+}
+
+void MultilineTextTexture::evaluate_text() {
+	al_do_multiline_ustr(font, line_width, text, count_ustr_lines, &line_num);
+}
+
+
+TransformTexture::TransformTexture(Texture* t) {
+	texture = t;
+}
 
 bool TransformTexture::in_bounds(int x, int y) {
     float xf = x, yf = y;
@@ -158,7 +170,7 @@ bool TransformTexture::in_bounds(int x, int y) {
     al_invert_transform(&trans);
     al_transform_coordinates(&trans, &xf, &yf);
 
-    return BitmapTexture::in_bounds((int)xf, (int)yf);
+    return texture->in_bounds(roundf(xf), roundf(yf));
 }
 
 void TransformTexture::draw(Graphics* g, int x, int y) {
@@ -172,40 +184,6 @@ void TransformTexture::draw(Graphics* g, int x, int y) {
     al_compose_transform(&trans, &prev);
 
     al_use_transform(&trans);
-    g->draw_bitmap(bmp, 0, 0, 0);
+    texture->draw(g, 0, 0);
     al_use_transform(&prev);
-}
-
-
-VerticalTexture::VerticalTexture(ALLEGRO_BITMAP* b, bool a) : TransformTexture(b) {
-    axis = a;
-}
-
-void VerticalTexture::compose_transform(ALLEGRO_TRANSFORM* trans) {
-    al_compose_transform(trans, (axis ? &x_shear : &y_shear));
-}
-
-
-HorizontalTexture::HorizontalTexture(ALLEGRO_BITMAP* b) : TransformTexture(b) {}
-
-void HorizontalTexture::compose_transform(ALLEGRO_TRANSFORM* trans) {
-    al_compose_transform(trans, &horiz);
-}
-
-
-AngledTexture::AngledTexture(ALLEGRO_BITMAP* b, bool a, int h) : VerticalTexture(b, a) {
-    height = h;
-}
-
-void AngledTexture::compose_transform(ALLEGRO_TRANSFORM* trans) {
-    ALLEGRO_TRANSFORM angle_t;
-    al_copy_transform(&angle_t, &horiz);
-    angle_t.m[axis ? 1 : 0][1] -= (float)height / al_get_bitmap_height(bmp);
-    al_compose_transform(trans, &angle_t);
-}
-
-
-LightTexture::LightTexture(ALLEGRO_COLOR t, int s) {
-    strength = s;
-    tint = t;
 }

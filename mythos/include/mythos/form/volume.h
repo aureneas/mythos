@@ -4,7 +4,7 @@
 #include <list>
 #include <vector>
 
-#include "../point.h"
+#include "../utility/point.h"
 
 
 enum Direction : int {
@@ -21,27 +21,11 @@ enum Direction : int {
 Point direction_to_point(Direction);
 
 
-typedef std::vector<Point> VertexList;
-
-struct Polygon {
-    Point center;
-    VertexList vertex;
-
-    Polygon();
-    Polygon(Polygon*);
-    Polygon adjust(Point);
-    bool intersect(Polygon*);
-};
-
 struct Volume {
-    Polygon base;
-    int z;
-    int height;
+	Vec3	crd;
+	Vec3	dim;
 
-    Volume();
-    Volume(Volume*);
-    Volume adjust(Point, int);
-    bool intersect(Volume*);
+	virtual bool intersect(Volume*);	// volume intersection
 };
 
 

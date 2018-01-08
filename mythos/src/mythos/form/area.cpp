@@ -28,15 +28,17 @@ void AreaWrapper::set_area(Area* a) {
     }
 }
 
-void AreaWrapper::push(Area* a) {
-    Point angle = area->angle;
+void AreaWrapper::push(Area* a, int k1_a, int k2_a) {
+    a->angle = angle;
+    a->sort();
+
     Point nrangle = { angle.y, -angle.x };
 
     for (int i = (int)a->size - 1; i >= 0; --i) {
         for (int j = (int)a->size - 1; j >= 0; --j) {
             Point p = { i * a->width, j * a->width };
-            int k1 = -(p * angle);
-            int k2 = (p * nrangle);
+            int k1 = k1_a - (p * angle);
+            int k2 = k2_a + (p * nrangle);
             //std::cout << "(" << i << ", " << j << ") -> (" << k1 << ", " << k2 << ") -> " << &a->tile[i][j] << "\n";
             AWTileList::iterator it1 = tile.find(k1);
             if (it1 == tile.end())
@@ -49,14 +51,14 @@ void AreaWrapper::push(Area* a) {
 
     for (ContainerFormList::iterator it = a->child.begin(); it != a->child.end(); ++it) {
         Form* f = it->get();
-        int k1 = -(f->vol.base.center * angle) - f->vol.z;
-        int k2 = f->vol.base.center * nrangle;
+        int k1 = k1_a - (f->vol->crd * angle) - f->vol->crd.z;
+        int k2 = k2_a + (f->vol->crd * nrangle);
         //std::cout << "(" << k1 << ", " << k2 << ") -> " << f << "\n";
         AWFormList::iterator it1 = form.find(k1);
         if (it1 == form.end())
-            form.emplace(k1, AWInnerFormList({{k2, f}}));
+            form.emplace_hint(it1, k1, AWInnerFormList({{k2, f}}));
         else
-            it1->second.emplace(k2, f);
+            it1->second.emplace_hint(it1->second.end(), k2, f);
     }
     //std::cout << "\n";
 }
@@ -65,7 +67,15 @@ void AreaWrapper::reset() {
     tile.clear();
     form.clear();
 
-    if (area)   push(area);
-    for (int i = 7; i >= 0; --i)
-        if (prox[i])    push(prox[i]);
+    Point angle = area->angle;
+    Point nrangle = { angle.y, -angle.x };
+
+    if (area)   push(area, 0, 0);
+    for (int i = 7; i >= 0; --i) {
+        Point q = direction_to_point((Direction)i);
+        q *= (int)(prox[i]->size * prox[i]->width);
+        if (prox[i])    push(prox[i],
+                             -(angle * q),
+                             (nrangle * q));
+    }
 }
