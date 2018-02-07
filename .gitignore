@@ -51,6 +51,7 @@ Temporary Items
 */lib/*
 */obj/*
 
+main.cpp
 *.cbp
 *.depend
 *.layout

@@ -4,7 +4,7 @@
 #include <allegro5/allegro_primitives.h>
 #include "../../../include/mythos/engine/engine.h"
 #include "../../../include/mythos/engine/texture.h"
-#include "../../../include/mythos/utility/point.h"
+#include "../../../include/mythos/utility/matrix.h"
 // TODO remove later
 #include <iostream>
 

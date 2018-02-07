@@ -1,52 +1,30 @@
-#ifndef MYTHOS_AREALAYER_H
-#define MYTHOS_AREALAYER_H
+#ifndef MYTHOS_FORMENGINE_H
+#define MYTHOS_FORMENGINE_H
 
 #include "../engine/state.h"
-#include "area.h"
+#include "volume.h"
 
 namespace engine {
 
 
-struct TileWidget: public Widget {
-    Tile* tile;
+struct VolumeWidget: public Widget {
+	Volume*		vol;
+	Texture**	texture;
 
-    TileWidget(Tile*, Point);
-    void draw(Graphics*, int, int);
+	bool in_bounds(int, int);
+	void draw(Graphics*, int, int);
 };
 
-struct FormWidget: public Widget {
-    Form* form;
+struct ContVolumeLayer: public Layer {
+	ContainerVolume		cont;
+	Point				center;
+	float				zoom;
 
-    FormWidget(Form*, Point);
-    bool in_bounds(int, int);
-    void draw(Graphics*, int, int);
-};
+	void update_frame();
 
-
-enum AREA_LAYER_INDICES : int {
-    TOP = 0,
-    BOTTOM = 1,
-    LEFT = 2,
-    RIGHT = 3
-};
-
-struct AreaLayer: public Layer {
-    int screen_buffer;
-    WidgetList::iterator tile_end;
-
-    AreaWrapper wrap;
-
-    Point center;
-    float top_view;
-
-    int indices[4];
-
-    AreaLayer();
-    void update_frame();
-    ALLEGRO_TRANSFORM get_crd_transform();	// constructs transformation from area coordinates to screen coordinates
-    void push(int, int, int, int);			// inserts all objects in rectangle indicated by four values
-    void set_center(Point);					// sets the center of view
-    void adjust_center(Point);				// adjusts the center of view
+	void set_center(const Point&);
+	void adjust_center(const Point&);
+	void set_zoom(float);
 };
 
 

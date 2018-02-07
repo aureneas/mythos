@@ -32,11 +32,11 @@ void AreaWrapper::push(Area* a, int k1_a, int k2_a) {
     a->angle = angle;
     a->sort();
 
-    Point nrangle = { angle.y, -angle.x };
+    Vec2 nrangle( angle.y, -angle.x );
 
     for (int i = (int)a->size - 1; i >= 0; --i) {
         for (int j = (int)a->size - 1; j >= 0; --j) {
-            Point p = { i * a->width, j * a->width };
+            Vec2 p( i * a->width, j * a->width );
             int k1 = k1_a - (p * angle);
             int k2 = k2_a + (p * nrangle);
             //std::cout << "(" << i << ", " << j << ") -> (" << k1 << ", " << k2 << ") -> " << &a->tile[i][j] << "\n";
@@ -67,15 +67,15 @@ void AreaWrapper::reset() {
     tile.clear();
     form.clear();
 
-    Point angle = area->angle;
-    Point nrangle = { angle.y, -angle.x };
+    Vec2 angle = area->angle;
+    Vec2 nrangle( angle.y, -angle.x );
 
     if (area)   push(area, 0, 0);
     for (int i = 7; i >= 0; --i) {
-        Point q = direction_to_point((Direction)i);
+        /*Vec2 q = direction_to_point((Direction)i);
         q *= (int)(prox[i]->size * prox[i]->width);
         if (prox[i])    push(prox[i],
                              -(angle * q),
-                             (nrangle * q));
+                             (nrangle * q));*/
     }
 }

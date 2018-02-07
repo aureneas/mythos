@@ -1,31 +1,40 @@
 #ifndef MYTHOS_VOLUME_H
 #define MYTHOS_VOLUME_H
 
-#include <list>
+#include <map>
+#include <memory>
 #include <vector>
 
-#include "../utility/point.h"
+#include "../utility/matrix.h"
+#include "form.h"
 
+struct ContainerVolume;
 
-enum Direction : int {
-    EAST = 0,
-    NORTHEAST = 1,
-    NORTH = 2,
-    NORTHWEST = 3,
-    WEST = 4,
-    SOUTHWEST = 5,
-    SOUTH = 6,
-    SOUTHEAST = 7
-};
-
-Point direction_to_point(Direction);
-
+typedef std::shared_ptr<Form>				FormPtr;
 
 struct Volume {
-	Vec3	crd;
-	Vec3	dim;
+	Vec3				crd;
+	Vec3				dim;
+	FormPtr				form;
+	ContainerVolume*	parent;
 
 	virtual bool intersect(Volume*);	// volume intersection
+};
+
+typedef std::unique_ptr<Volume>				VolumePtr;
+
+typedef std::multimap<int, VolumePtr>		ContVolumeInnerList;
+typedef std::map<int, ContVolumeInnerList>	ContVolumeList;
+
+struct ContainerVolume: public Volume {
+	Vec2				angle1;
+	Vec2				angle2;
+	int					max_dim;
+	ContVolumeList		vols;
+
+	bool intersect(Volume*);
+	void set_angle(const Vec2&);
+	bool set_crd(Volume*, const Vec3&);
 };
 
 

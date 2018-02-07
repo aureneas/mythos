@@ -4,7 +4,7 @@
 #include <vector>
 #include <allegro5/allegro.h>
 #include "graphics.h"
-#include "../utility/point.h"
+#include "../utility/matrix.h"
 
 
 struct Texture {

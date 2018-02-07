@@ -7,7 +7,7 @@
 
 #include <allegro5/allegro.h>
 
-#include "../utility/point.h"
+#include "../utility/matrix.h"
 #include "../utility/random.h"
 
 struct Animation {
