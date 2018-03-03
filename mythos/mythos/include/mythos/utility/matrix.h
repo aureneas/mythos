@@ -101,6 +101,13 @@ struct Matrix {
 template <int W>
 struct VectorW : public Matrix<int, W, 1> {
 	
+	VectorW<W>() {}
+	
+	VectorW<W>(Matrix<int, W, 1>& v) {
+		for (int i = W - 1; i >= 0; --i)
+			m[i][0] = v.m[i][0];
+	}
+	
 	VectorW<W>& operator=(Matrix<int, W, 1>& rhs) {
 		return (VectorW<W>&)Matrix<int, W, 1>::operator=(rhs);
 	}
@@ -130,6 +137,9 @@ struct Vec2 : public VectorW<2> {
 		y = py;
 	}
 
+	Vec2(Matrix<int, 2, 1>& v) : VectorW<2>(v), x(m[0][0]), y(m[1][0]) {}
+
+
 	Vec2& operator=(Vec2& rhs) {
 		return (Vec2&)Matrix<int, 2, 1>::operator=(rhs);
 	}
@@ -149,21 +159,15 @@ struct Vec2 : public VectorW<2> {
 
 
 	Vec2 operator+(Vec2& rhs) {
-		Vec2 result = *this;
-		result += rhs;
-		return result;
+		return Vec2(Matrix<int, 2, 1>::operator+(rhs));
 	}
 
 	Vec2 operator-(Vec2& rhs) {
-		Vec2 result = *this;
-		result -= rhs;
-		return result;
+		return Vec2(Matrix<int, 2, 1>::operator-(rhs));
 	}
 
 	Vec2 operator*(Vec2& rhs) {
-		Vec2 result = *this;
-		result *= rhs;
-		return result;
+		return Vec2(Matrix<int, 2, 1>::operator*(rhs));
 	}
 };
 
@@ -177,6 +181,8 @@ struct Vec3 : public VectorW<3> {
 		y = py;
 		z = pz;
 	}
+
+	Vec3(Matrix<int, 3, 1>& v) : VectorW<3>(v), x(m[0][0]), y(m[1][0]), z(m[2][0]) {}
 
 	const Vec3& operator=(Vec3& rhs) {
 		return (Vec3&)Matrix<int, 3, 1>::operator=(rhs);
@@ -197,21 +203,15 @@ struct Vec3 : public VectorW<3> {
 
 
 	Vec3 operator+(Vec3& rhs) {
-		Vec3 result = *this;
-		result += rhs;
-		return result;
+		return Vec3(Matrix<int, 3, 1>::operator+(rhs));
 	}
 
 	Vec3 operator-(Vec3& rhs) {
-		Vec3 result = *this;
-		result -= rhs;
-		return result;
+		return Vec3(Matrix<int, 3, 1>::operator-(rhs));
 	}
 
 	Vec3 operator*(Vec3& rhs) {
-		Vec3 result = *this;
-		result *= rhs;
-		return result;
+		return Vec3(Matrix<int, 3, 1>::operator*(rhs));
 	}
 };
 

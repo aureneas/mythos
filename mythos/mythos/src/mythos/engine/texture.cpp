@@ -3,8 +3,8 @@
 
 #include "../../../include/mythos/engine/texture.h"
 
-#include <iostream>
-#include "../../../include/mythos/debug/debug_string.h"
+//#include "../../../include/mythos/engine/state.h"
+//#include "../../../include/mythos/debug/debug.h"
 
 namespace mythos_engine {
 
@@ -112,6 +112,9 @@ namespace mythos_engine {
 	}
 
 	void render_square() {
+		// TODO figure out how to do glDrawArrays
+		//glDrawArrays(GL_QUADS, 0, 4);
+
 		glBegin(GL_QUADS);
 		glVertex2d(0.0, 0.0);
 		glVertexAttrib2d(texCoordIndex, 1.0, 0.0);
@@ -134,20 +137,17 @@ namespace mythos_engine {
 	}
 	
 	bool ImageTexture::in_bounds(Vec2 point) {
-		return (point.x < texture->width 
-			&& point.y < texture->height 
-			&& point.x >= 0 
+		return (point.x < texture->width
+			&& point.y < texture->height
+			&& point.x >= 0
 			&& point.y >= 0);
 	}
 
 	void ImageTexture::render() {
 		glPushMatrix();
-		//glTranslated(10.0, 0.0, 0.0);
 		glScaled(texture->widthD, texture->heightD, 1.0);
-		//glScaled(20, 20, 1.0);
-		//glColor4d(1.0, 1.0, 1.0, 1.0);
 		glBindTexture(GL_TEXTURE_2D, texture->key);
-		//glDrawArrays(GL_QUADS, 0, 4);
+		
 		render_square();
 
 		glPopMatrix();

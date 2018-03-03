@@ -21,7 +21,7 @@ namespace mythos_engine {
 
 
 	struct Texture {
-		bool in_bounds(Vec2) { return false; }
+		virtual bool in_bounds(Vec2) { return false; }
 
 		virtual void render() = 0;
 	};

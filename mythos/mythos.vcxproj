@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="debug.h" />
     <ClInclude Include="mythos\include\mythos\debug\debug_string.h" />
     <ClInclude Include="mythos\include\mythos\engine\engine.h" />
     <ClInclude Include="mythos\include\mythos\engine\event.h" />
+    <ClInclude Include="mythos\include\mythos\engine\functions\mouse_handlers.h" />
     <ClInclude Include="mythos\include\mythos\engine\options.h" />
     <ClInclude Include="mythos\include\mythos\engine\state.h" />
     <ClInclude Include="mythos\include\mythos\engine\texture.h" />
@@ -40,9 +42,11 @@
     <ClCompile Include="mythos\soil\Simple OpenGL Image Library\src\image_helper.c" />
     <ClCompile Include="mythos\soil\Simple OpenGL Image Library\src\SOIL.c" />
     <ClCompile Include="mythos\soil\Simple OpenGL Image Library\src\stb_image_aug.c" />
+    <ClCompile Include="mythos\src\mythos\debug\debug.cpp" />
     <ClCompile Include="mythos\src\mythos\debug\debug_string.cpp" />
     <ClCompile Include="mythos\src\mythos\engine\engine.cpp" />
     <ClCompile Include="mythos\src\mythos\engine\event.cpp" />
+    <ClCompile Include="mythos\src\mythos\engine\functions\handlers.cpp" />
     <ClCompile Include="mythos\src\mythos\engine\texture.cpp" />
     <ClCompile Include="mythos\src\mythos\engine\widget.cpp" />
     <ClCompile Include="mythos\src\mythos\main.cpp" />

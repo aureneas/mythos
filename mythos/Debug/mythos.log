@@ -1,2 +1,5 @@
-﻿  main.cpp
+﻿  widget.cpp
+  texture.cpp
+  event.cpp
+  Generating Code...
   mythos.vcxproj -> C:\Users\Zach\Documents\GitHub\mythos\mythos\Debug\mythos.exe

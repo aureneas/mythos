@@ -1,19 +1,22 @@
 #include "../../../include/mythos/engine/widget.h"
 
+//#include "../../../include/mythos/engine/state.h"
+//#include "../../../include/mythos/debug/debug.h"
+
 namespace mythos_engine {
 
 	Widget::Widget(Vec2 p) {
 		crd = p;
 	}
 
-	WidgetFunction Widget::get_event(MYTHOS_EVENT type) {
+	WidgetFunction Widget::get_event(MYTHOS_EVENT_TYPE type) {
 		WidgetEvents::iterator it = events.find(type);
 		if (it != events.end())
 			return it->second;
 		return nullptr;
 	}
 
-	void Widget::set_event(MYTHOS_EVENT type, WidgetFunction value) {
+	void Widget::set_event(MYTHOS_EVENT_TYPE type, WidgetFunction value) {
 		WidgetEvents::iterator it = events.find(type);
 		if (it != events.end()) {
 			events.erase(it);
@@ -24,10 +27,10 @@ namespace mythos_engine {
 		}
 	}
 
-	int Widget::update_event(MYTHOS_EVENT type, Vec2 point, void* ptr) {
+	int Widget::update_event(MYTHOS_EVENT_TYPE type, Vec2 point) {
 		WidgetFunction func = get_event(type);
 		if (func) 
-			return func(this, point + crd, ptr);
+			return func(this, point);
 		return MYTHOS_UPDATE_CONTINUE;
 	}
 
@@ -38,12 +41,12 @@ namespace mythos_engine {
 		// TODO implement?
 	}
 
-	int ContainerWidget::update_event(MYTHOS_EVENT type, Vec2 point, void* ptr) {
-		int value = Widget::update_event(type, point, ptr);
+	int ContainerWidget::update_event(MYTHOS_EVENT_TYPE type, Vec2 point) {
+		int value = Widget::update_event(type, point);
 		if (value == MYTHOS_UPDATE_CONTINUE) {
 			Vec2 n_point = point + crd;
 			for (WidgetList::iterator it = child.begin(); it != child.end(); ++it) {
-				value = (*it)->update_event(type, n_point, ptr);
+				value = (*it)->update_event(type, n_point);
 				if (value != MYTHOS_UPDATE_CONTINUE)
 					return value;
 			}
@@ -101,7 +104,7 @@ namespace mythos_engine {
 	}
 	
 	bool TextureWidget::in_bounds(Vec2 point) {
-		if (texture)
+		if (texture) 
 			return texture->in_bounds(point - crd);
 		return false;
 	}

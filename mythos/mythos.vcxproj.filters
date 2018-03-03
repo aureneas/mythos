@@ -40,6 +40,12 @@
     <Filter Include="Source Files\mythos\debug">
       <UniqueIdentifier>{c84bb9d2-3d61-4c1e-95e1-612614138a9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\mythos\engine\functions">
+      <UniqueIdentifier>{9e3491da-431c-40ff-8b37-4b825f2baedf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mythos\engine\functions">
+      <UniqueIdentifier>{a3944c35-d0c0-4799-9b57-246f5eb2b4be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythos\soil\Simple OpenGL Image Library\src\image_DXT.h">
@@ -87,6 +93,12 @@
     <ClInclude Include="mythos\include\mythos\debug\debug_string.h">
       <Filter>Header Files\mythos\debug</Filter>
     </ClInclude>
+    <ClInclude Include="mythos\include\mythos\engine\functions\mouse_handlers.h">
+      <Filter>Header Files\mythos\engine\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="debug.h">
+      <Filter>Header Files\mythos\debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mythos\soil\Simple OpenGL Image Library\src\image_DXT.c">
@@ -117,6 +129,12 @@
       <Filter>Source Files\mythos</Filter>
     </ClCompile>
     <ClCompile Include="mythos\src\mythos\debug\debug_string.cpp">
+      <Filter>Source Files\mythos\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="mythos\src\mythos\engine\functions\handlers.cpp">
+      <Filter>Source Files\mythos\engine\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="mythos\src\mythos\debug\debug.cpp">
       <Filter>Source Files\mythos\debug</Filter>
     </ClCompile>
   </ItemGroup>

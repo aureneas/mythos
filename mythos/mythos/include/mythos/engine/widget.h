@@ -18,23 +18,32 @@ namespace mythos_engine {
 
 
 	struct Widget;
-	typedef int(*WidgetFunction)(Widget*, Vec2, void*);
+	typedef int(*WidgetFunction)(Widget*, Vec2);
 
-	typedef std::unordered_map<MYTHOS_EVENT, WidgetFunction> WidgetEvents;
+	typedef std::unordered_map<MYTHOS_EVENT_TYPE, WidgetFunction> WidgetEvents;
 
 	struct Widget {
 		Vec2 crd;
 
 		WidgetEvents events;
-		WidgetFunction get_event(MYTHOS_EVENT);
-		void set_event(MYTHOS_EVENT, WidgetFunction);
+		WidgetFunction get_event(MYTHOS_EVENT_TYPE);
+		void set_event(MYTHOS_EVENT_TYPE, WidgetFunction);
 
 		Widget(Vec2);
 
 		virtual void update_frame() {}
 
-		virtual int update_event(MYTHOS_EVENT, Vec2, void*);
+		/*
+		*	Updates the Widget from an event.
+		*	@param type		An enum representing the type of event.
+		*	@param point	A Vec2 object representing the absolute coordinates of the parent of the current Widget.
+		*/
+		virtual int update_event(MYTHOS_EVENT_TYPE, Vec2);
 
+		/*
+		*	Returns true if the given coordinates are in the bounds of the Widget.
+		*	@param point	A Vec2 object, with coordinates relative to the parent of the current Widget.
+		*/
 		virtual bool in_bounds(Vec2) { return false; }
 
 		virtual void render() = 0;
@@ -53,7 +62,7 @@ namespace mythos_engine {
 
 		void update_frame();
 
-		int update_event(MYTHOS_EVENT, Vec2, void*);
+		int update_event(MYTHOS_EVENT_TYPE, Vec2);
 
 		bool in_bounds(Vec2);
 

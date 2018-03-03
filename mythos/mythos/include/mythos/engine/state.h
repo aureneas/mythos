@@ -5,7 +5,7 @@
 
 namespace mythos_engine {
 
-	const ContainerWidget& get_layers();
+	ContainerWidget& get_layers();
 
 	void push_layer(Widget*);
 

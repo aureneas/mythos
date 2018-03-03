@@ -4,7 +4,9 @@
 #include "../../../include/mythos/engine/engine.h"
 #include "../../../include/mythos/engine/event.h"
 #include "../../../include/mythos/engine/options.h"
+#include "../../../include/mythos/engine/state.h"
 #include "../../../include/mythos/engine/texture.h"
+#include "../../../include/mythos/engine/functions/mouse_handlers.h"
 
 namespace mythos_engine {
 
@@ -47,6 +49,7 @@ namespace mythos_engine {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		glViewport(0, 0, opt.width, opt.height);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glPushMatrix();
@@ -58,6 +61,9 @@ namespace mythos_engine {
 
 		glDisable(GL_LIGHTING);
 		glDisable(GL_LIGHT0);
+
+		event_init();
+		get_layers().set_event(MYTHOS_EVENT_MOUSE_MOTION_PRESSED, mouse_motion_pressed_draggable);
 	}
 
 	void mythos_run(void) {
