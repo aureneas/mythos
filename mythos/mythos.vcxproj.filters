@@ -11,139 +11,53 @@
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
-    </Filter>
-    <Filter Include="Header Files\SOIL">
-      <UniqueIdentifier>{12ffd762-3e59-4c33-b5c4-7756959b0b7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SOIL">
-      <UniqueIdentifier>{622eb41d-6376-4f3a-ab26-430a7765bfda}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\mythos">
-      <UniqueIdentifier>{4d608833-3752-4c90-aefb-c37e2501ff5a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\mythos\utility">
-      <UniqueIdentifier>{95845b2d-facc-4e66-a125-64cc990193e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\mythos\engine">
-      <UniqueIdentifier>{58617721-de48-4703-8f36-2291380919ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\mythos">
-      <UniqueIdentifier>{6a86ee7d-a49c-4c6f-8238-47507ffd7860}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\mythos\engine">
-      <UniqueIdentifier>{0d4005dd-9c51-480a-be44-d15919e0d55f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\mythos\debug">
-      <UniqueIdentifier>{9add9862-8dab-48b8-ae50-e765a8045991}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\mythos\debug">
-      <UniqueIdentifier>{c84bb9d2-3d61-4c1e-95e1-612614138a9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\mythos\engine\functions">
-      <UniqueIdentifier>{9e3491da-431c-40ff-8b37-4b825f2baedf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\mythos\engine\functions">
-      <UniqueIdentifier>{a3944c35-d0c0-4799-9b57-246f5eb2b4be}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="mythos\soil\Simple OpenGL Image Library\src\image_DXT.h">
-      <Filter>Header Files\SOIL</Filter>
+    <ClInclude Include="mythos\include\mythos.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mythos\soil\Simple OpenGL Image Library\src\image_helper.h">
-      <Filter>Header Files\SOIL</Filter>
+    <ClInclude Include="mythos\include\engine\engine.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mythos\soil\Simple OpenGL Image Library\src\SOIL.h">
-      <Filter>Header Files\SOIL</Filter>
+    <ClInclude Include="mythos\include\engine\event.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mythos\soil\Simple OpenGL Image Library\src\stb_image_aug.h">
-      <Filter>Header Files\SOIL</Filter>
+    <ClInclude Include="mythos\include\engine\options.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mythos\soil\Simple OpenGL Image Library\src\stbi_DDS_aug.h">
-      <Filter>Header Files\SOIL</Filter>
+    <ClInclude Include="mythos\include\engine\state.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mythos\soil\Simple OpenGL Image Library\src\stbi_DDS_aug_c.h">
-      <Filter>Header Files\SOIL</Filter>
+    <ClInclude Include="mythos\include\engine\texture.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mythos\include\mythos\mythos.h">
-      <Filter>Header Files\mythos</Filter>
+    <ClInclude Include="mythos\include\engine\widget.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mythos\include\mythos\engine\engine.h">
-      <Filter>Header Files\mythos\engine</Filter>
+    <ClInclude Include="mythos\include\engine\functions\mouse_handlers.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mythos\include\mythos\engine\event.h">
-      <Filter>Header Files\mythos\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="mythos\include\mythos\engine\options.h">
-      <Filter>Header Files\mythos\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="mythos\include\mythos\engine\state.h">
-      <Filter>Header Files\mythos\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="mythos\include\mythos\engine\texture.h">
-      <Filter>Header Files\mythos\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="mythos\include\mythos\engine\widget.h">
-      <Filter>Header Files\mythos\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="mythos\include\mythos\utility\matrix.h">
-      <Filter>Header Files\mythos\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="mythos\include\mythos\debug\debug_string.h">
-      <Filter>Header Files\mythos\debug</Filter>
-    </ClInclude>
-    <ClInclude Include="mythos\include\mythos\engine\functions\mouse_handlers.h">
-      <Filter>Header Files\mythos\engine\functions</Filter>
-    </ClInclude>
-    <ClInclude Include="debug.h">
-      <Filter>Header Files\mythos\debug</Filter>
+    <ClInclude Include="mythos\include\utility\matrix.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mythos\soil\Simple OpenGL Image Library\src\image_DXT.c">
-      <Filter>Source Files\SOIL</Filter>
+    <ClCompile Include="mythos\src\engine\engine.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mythos\soil\Simple OpenGL Image Library\src\image_helper.c">
-      <Filter>Source Files\SOIL</Filter>
+    <ClCompile Include="mythos\src\engine\event.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mythos\soil\Simple OpenGL Image Library\src\SOIL.c">
-      <Filter>Source Files\SOIL</Filter>
+    <ClCompile Include="mythos\src\engine\texture.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mythos\soil\Simple OpenGL Image Library\src\stb_image_aug.c">
-      <Filter>Source Files\SOIL</Filter>
+    <ClCompile Include="mythos\src\engine\widget.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mythos\src\mythos\engine\engine.cpp">
-      <Filter>Source Files\mythos\engine</Filter>
+    <ClCompile Include="mythos\src\engine\functions\handlers.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mythos\src\mythos\engine\event.cpp">
-      <Filter>Source Files\mythos\engine</Filter>
-    </ClCompile>
-    <ClCompile Include="mythos\src\mythos\engine\texture.cpp">
-      <Filter>Source Files\mythos\engine</Filter>
-    </ClCompile>
-    <ClCompile Include="mythos\src\mythos\engine\widget.cpp">
-      <Filter>Source Files\mythos\engine</Filter>
-    </ClCompile>
-    <ClCompile Include="mythos\src\mythos\main.cpp">
-      <Filter>Source Files\mythos</Filter>
-    </ClCompile>
-    <ClCompile Include="mythos\src\mythos\debug\debug_string.cpp">
-      <Filter>Source Files\mythos\debug</Filter>
-    </ClCompile>
-    <ClCompile Include="mythos\src\mythos\engine\functions\handlers.cpp">
-      <Filter>Source Files\mythos\engine\functions</Filter>
-    </ClCompile>
-    <ClCompile Include="mythos\src\mythos\debug\debug.cpp">
-      <Filter>Source Files\mythos\debug</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="mythos\src\mythos\engine\imageShader.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="mythos\src\mythos\engine\imageShader.frag">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

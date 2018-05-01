@@ -1,5 +1,533 @@
 ﻿  widget.cpp
-  texture.cpp
+  Note: including file: c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\../../include/engine/texture.h
+  Note: including file:  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\string
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\istream
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ostream
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ios
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocnum
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\climits
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\yvals.h
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xkeycheck.h
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\crtdefs.h
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\sal.h
+  Note: including file:            C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ConcurrencySal.h
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vadefs.h
+  Note: including file:          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt.h
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\use_ansi.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\limits.h
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cmath
+  Note: including file:        C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\math.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xtgmath.h
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xtr1common
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstdlib
+  Note: including file:           C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdlib.h
+  Note: including file:            C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_malloc.h
+  Note: including file:            C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_search.h
+  Note: including file:             C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stddef.h
+  Note: including file:            C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdlib.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstdio
+  Note: including file:        C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h
+  Note: including file:         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h
+  Note: including file:          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_stdio_config.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\streambuf
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xiosbase
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocale
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstring
+  Note: including file:           C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\string.h
+  Note: including file:            C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_memory.h
+  Note: including file:             C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_memcpy_s.h
+  Note: including file:              C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\errno.h
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_string.h
+  Note: including file:               C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:            C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstring.h
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\stdexcept
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\exception
+  Note: including file:            C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\type_traits
+  Note: including file:             C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xstddef
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstddef
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\initializer_list
+  Note: including file:            C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\malloc.h
+  Note: including file:            C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_exception.h
+  Note: including file:             C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\eh.h
+  Note: including file:              C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_terminate.h
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xstring
+  Note: including file:            C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xmemory0
+  Note: including file:             C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstdint
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\stdint.h
+  Note: including file:               C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:             C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\limits
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ymath.h
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cfloat
+  Note: including file:               C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\float.h
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cwchar
+  Note: including file:               C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\wchar.h
+  Note: including file:                C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wconio.h
+  Note: including file:                C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wctype.h
+  Note: including file:                C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wdirect.h
+  Note: including file:                C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wio.h
+  Note: including file:                 C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_share.h
+  Note: including file:                C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wprocess.h
+  Note: including file:                C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wtime.h
+  Note: including file:                C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\sys/stat.h
+  Note: including file:                 C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\sys/types.h
+  Note: including file:             C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\new
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_new.h
+  Note: including file:               C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:             C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xutility
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\utility
+  Note: including file:               C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\iosfwd
+  Note: including file:                C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\crtdbg.h
+  Note: including file:                 C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_new_debug.h
+  Note: including file:             C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xatomic0.h
+  Note: including file:             C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\intrin.h
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\setjmp.h
+  Note: including file:               C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\immintrin.h
+  Note: including file:               C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\wmmintrin.h
+  Note: including file:                C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\nmmintrin.h
+  Note: including file:                 C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\smmintrin.h
+  Note: including file:                  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\tmmintrin.h
+  Note: including file:                   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\pmmintrin.h
+  Note: including file:                    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\emmintrin.h
+  Note: including file:                     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xmmintrin.h
+  Note: including file:                      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\mmintrin.h
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ammintrin.h
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\mm3dnow.h
+  Note: including file:               C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\typeinfo
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_typeinfo.h
+  Note: including file:            C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocinfo
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocinfo.h
+  Note: including file:            C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\ctype.h
+  Note: including file:            C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\locale.h
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xfacet
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\system_error
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cerrno
+  Note: including file:         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\share.h
+  Note: including file:  c:\users\zach\documents\github\mythos\mythos\mythos\include\engine\../../../_dependencies/GL/glew.h
+  Note: including file:   C:\Program Files (x86)\Windows Kits\8.1\Include\um\GL/glu.h
+  Note: including file:    C:\Program Files (x86)\Windows Kits\8.1\Include\shared\winapifamily.h
+  Note: including file:    C:\Program Files (x86)\Windows Kits\8.1\Include\um\GL/gl.h
+  Note: including file:  c:\users\zach\documents\github\mythos\mythos\mythos\include\engine\../utility/matrix.h
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(8): error C2653: 'Widget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(8): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(9): error C2065: 'crd': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(10): warning C4508: 'mythos_engine::Widget': function should return a value; 'void' return type assumed
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(12): error C2653: 'Widget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(12): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(12): error C2146: syntax error: missing ';' before identifier 'get_event'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(12): error C2143: syntax error: missing ';' before '{'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(12): error C2447: '{': missing function header (old-style formal list?)
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(19): error C2653: 'Widget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(19): error C2065: 'MYTHOS_EVENT_TYPE': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(19): error C2146: syntax error: missing ')' before identifier 'type'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(19): error C2143: syntax error: missing ';' before '{'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(19): error C2447: '{': missing function header (old-style formal list?)
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(30): error C2653: 'Widget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(30): error C2065: 'MYTHOS_EVENT_TYPE': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(30): error C2146: syntax error: missing ')' before identifier 'type'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(30): error C2143: syntax error: missing ';' before '{'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(30): error C2447: '{': missing function header (old-style formal list?)
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(38): error C2653: 'ContainerWidget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(38): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(38): error C2550: 'mythos_engine::ContainerWidget': constructor initializer lists are only allowed on constructor definitions
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(38): warning C4508: 'mythos_engine::ContainerWidget': function should return a value; 'void' return type assumed
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(40): error C2653: 'ContainerWidget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(44): error C2653: 'ContainerWidget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(44): error C2065: 'MYTHOS_EVENT_TYPE': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(44): error C2146: syntax error: missing ')' before identifier 'type'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(44): error C2143: syntax error: missing ';' before '{'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(44): error C2447: '{': missing function header (old-style formal list?)
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(57): error C2653: 'ContainerWidget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(58): error C2065: 'crd': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(59): error C2653: 'WidgetList': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(59): error C2065: 'iterator': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(59): error C2146: syntax error: missing ';' before identifier 'it'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(59): error C2143: syntax error: missing ';' before '='
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(59): error C2143: syntax error: missing ')' before '='
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(59): error C2059: syntax error: '='
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(59): error C2065: 'it': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(59): error C2065: 'child': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(59): error C2228: left of '.end' must have class/struct/union
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(59): note: type is 'unknown-type'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(59): error C2059: syntax error: ')'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(60): error C2059: syntax error: 'if'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(63): error C2059: syntax error: 'return'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(66): error C2653: 'ContainerWidget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(68): error C2065: 'length': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(68): error C2660: 'glScaled': function does not take 2 arguments
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(69): error C2065: 'crd': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(69): error C2228: left of '.x' must have class/struct/union
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(69): note: type is 'unknown-type'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(69): error C2228: left of '.y' must have class/struct/union
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(69): note: type is 'unknown-type'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(69): error C2660: 'glTranslated': function does not take 2 arguments
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(70): error C2653: 'WidgetList': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(70): error C2065: 'reverse_iterator': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(70): error C2146: syntax error: missing ';' before identifier 'it'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(70): error C2143: syntax error: missing ';' before '='
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(70): error C2143: syntax error: missing ')' before '='
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(70): error C2059: syntax error: '='
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(70): error C2065: 'it': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(70): error C2065: 'child': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(70): error C2228: left of '.rend' must have class/struct/union
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(70): note: type is 'unknown-type'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(70): error C2059: syntax error: ')'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(71): error C2065: 'it': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(71): error C2227: left of '->render' must point to class/struct/union/generic type
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(71): note: type is 'unknown-type'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(71): error C2059: syntax error: ';'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(74): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(74): error C2556: 'int glPopMatrix(void)': overloaded function differs only by return type from 'void glPopMatrix(void)'
+  c:\users\zach\documents\github\mythos\mythos\_dependencies\gl\glew.h(1053): note: see declaration of 'glPopMatrix'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(74): error C2373: 'glPopMatrix': redefinition; different type modifiers
+  c:\users\zach\documents\github\mythos\mythos\_dependencies\gl\glew.h(1053): note: see declaration of 'glPopMatrix'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(75): error C2059: syntax error: '}'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(75): error C2143: syntax error: missing ';' before '}'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(77): error C2653: 'ContainerWidget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(77): error C2143: syntax error: missing ';' before '{'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(77): error C2447: '{': missing function header (old-style formal list?)
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(91): error C2653: 'ContainerWidget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(91): error C2065: 'Widget': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(91): error C2065: 'w': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(91): error C2182: 'remove': illegal use of type 'void'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(91): error C2365: 'remove': redefinition; previous definition was 'function'
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(363): note: see declaration of 'remove'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(91): error C2448: 'remove': function-style initializer appears to be a function definition
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(102): error C2653: 'TextureWidget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(102): error C2065: 'Texture': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(102): error C2065: 't': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(102): error C2275: 'Vec2': illegal use of this type as an expression
+  c:\users\zach\documents\github\mythos\mythos\mythos\include\utility\matrix.h(131): note: see declaration of 'Vec2'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(102): error C2146: syntax error: missing ')' before identifier 'p'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(102): error C2065: 'p': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(102): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(102): error C2448: 'Widget': function-style initializer appears to be a function definition
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(106): error C2653: 'TextureWidget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(107): error C2065: 'texture': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(108): error C2065: 'texture': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(108): error C2227: left of '->in_bounds' must point to class/struct/union/generic type
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(108): note: type is 'unknown-type'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(108): error C2065: 'crd': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(112): error C2653: 'TextureWidget': is not a class or namespace name
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(112): error C2084: function 'void render(void)' already has a body
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(66): note: see previous definition of 'render'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(113): error C2065: 'texture': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(115): error C2065: 'crd': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(115): error C2228: left of '.x' must have class/struct/union
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(115): note: type is 'unknown-type'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(115): error C2228: left of '.y' must have class/struct/union
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(115): note: type is 'unknown-type'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(115): error C2660: 'glTranslated': function does not take 2 arguments
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(116): error C2065: 'texture': undeclared identifier
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(116): error C2227: left of '->render' must point to class/struct/union/generic type
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(116): note: type is 'unknown-type'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(121): error C2059: syntax error: '}'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\widget.cpp(121): error C2143: syntax error: missing ';' before '}'
   event.cpp
+  Note: including file: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\unordered_set
+  Note: including file:  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xhash
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstring
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\yvals.h
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xkeycheck.h
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\crtdefs.h
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\sal.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ConcurrencySal.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vadefs.h
+  Note: including file:      C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\use_ansi.h
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\string.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_memory.h
+  Note: including file:      C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_memcpy_s.h
+  Note: including file:       C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\errno.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_string.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstring.h
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cwchar
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\wchar.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wconio.h
+  Note: including file:      C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_stdio_config.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wctype.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wdirect.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wio.h
+  Note: including file:      C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_share.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wprocess.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdlib.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wtime.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\sys/stat.h
+  Note: including file:      C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\sys/types.h
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\list
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xmemory
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xmemory0
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstdint
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\stdint.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstdlib
+  Note: including file:       C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdlib.h
+  Note: including file:        C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_malloc.h
+  Note: including file:        C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_search.h
+  Note: including file:         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stddef.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\limits.h
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\limits
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ymath.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cfloat
+  Note: including file:        C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\float.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\climits
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cmath
+  Note: including file:        C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\math.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xtgmath.h
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xtr1common
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xstddef
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstddef
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\initializer_list
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\new
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\exception
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\type_traits
+  Note: including file:        C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\malloc.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_exception.h
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\eh.h
+  Note: including file:          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_terminate.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_new.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xutility
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\utility
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\iosfwd
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstdio
+  Note: including file:          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h
+  Note: including file:         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\crtdbg.h
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_new_debug.h
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xatomic0.h
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\intrin.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\setjmp.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\immintrin.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\wmmintrin.h
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\nmmintrin.h
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\smmintrin.h
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\tmmintrin.h
+  Note: including file:            C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\pmmintrin.h
+  Note: including file:             C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\emmintrin.h
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xmmintrin.h
+  Note: including file:               C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\mmintrin.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ammintrin.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\mm3dnow.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\stdexcept
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xstring
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vector
+  Note: including file: c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\../../include/engine/event.h
+  Note: including file:  c:\users\zach\documents\github\mythos\mythos\mythos\include\engine\../../../_dependencies/GL/glfw3.h
+  Note: including file:   C:\Program Files (x86)\Windows Kits\8.1\Include\um\GL/gl.h
+  Note: including file:    C:\Program Files (x86)\Windows Kits\8.1\Include\shared\winapifamily.h
+  Note: including file:  c:\users\zach\documents\github\mythos\mythos\mythos\include\engine\../utility/matrix.h
+  Note: including file: c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\../../include/engine/options.h
+  Note: including file: c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\../../include/engine/widget.h
+  Note: including file:  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\typeinfo
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_typeinfo.h
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\unordered_map
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\tuple
+  Note: including file:  c:\users\zach\documents\github\mythos\mythos\mythos\include\engine\texture.h
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\string
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\istream
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ostream
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ios
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocnum
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\streambuf
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xiosbase
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocale
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocinfo
+  Note: including file:            C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocinfo.h
+  Note: including file:             C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\ctype.h
+  Note: including file:             C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\locale.h
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xfacet
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\system_error
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cerrno
+  Note: including file:          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\share.h
+  Note: including file:   c:\users\zach\documents\github\mythos\mythos\mythos\include\engine\../../../_dependencies/GL/glew.h
+c:\users\zach\documents\github\mythos\mythos\_dependencies\gl\glew.h(85): fatal error C1189: #error:  gl.h included before glew.h
+  engine.cpp
+  Note: including file: C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdlib.h
+  Note: including file:  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt.h
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\sal.h
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ConcurrencySal.h
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vadefs.h
+  Note: including file:  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_malloc.h
+  Note: including file:  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_search.h
+  Note: including file:   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stddef.h
+  Note: including file:  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdlib.h
+  Note: including file:  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\limits.h
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\thread
+  Note: including file:  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\exception
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\type_traits
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xstddef
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstddef
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\yvals.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xkeycheck.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\crtdefs.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\use_ansi.h
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstdlib
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\initializer_list
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xtr1common
+  Note: including file:   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\malloc.h
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_exception.h
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\eh.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_terminate.h
+  Note: including file:  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\iosfwd
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstdio
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h
+  Note: including file:      C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_stdio_config.h
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstring
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\string.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_memory.h
+  Note: including file:      C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_memcpy_s.h
+  Note: including file:       C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\errno.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_string.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstring.h
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cwchar
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\wchar.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wconio.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wctype.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wdirect.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wio.h
+  Note: including file:      C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_share.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wprocess.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wtime.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\sys/stat.h
+  Note: including file:      C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\sys/types.h
+  Note: including file:   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\crtdbg.h
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_new_debug.h
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_new.h
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\functional
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xfunctional
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xstring
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xmemory0
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cstdint
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\stdint.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\limits
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ymath.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cfloat
+  Note: including file:        C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\float.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\climits
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cmath
+  Note: including file:        C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\math.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xtgmath.h
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\new
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xutility
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\utility
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xatomic0.h
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\intrin.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\setjmp.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\immintrin.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\wmmintrin.h
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\nmmintrin.h
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\smmintrin.h
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\tmmintrin.h
+  Note: including file:            C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\pmmintrin.h
+  Note: including file:             C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\emmintrin.h
+  Note: including file:              C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xmmintrin.h
+  Note: including file:               C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\mmintrin.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ammintrin.h
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\mm3dnow.h
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\typeinfo
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime_typeinfo.h
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vcruntime.h
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\tuple
+  Note: including file:  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\chrono
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ratio
+  Note: including file:   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\time.h
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\thr/xtimec.h
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\thr/xthrcommon.h
+  Note: including file:  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xmemory
+  Note: including file:  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\thr/xthread
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\thr/xtime
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\thr/xthreads.h
+  Note: including file: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ctime
+  Note: including file: c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\../../../_dependencies/GL/glew.h
+  Note: including file:  C:\Program Files (x86)\Windows Kits\8.1\Include\um\GL/glu.h
+  Note: including file:   C:\Program Files (x86)\Windows Kits\8.1\Include\shared\winapifamily.h
+  Note: including file:   C:\Program Files (x86)\Windows Kits\8.1\Include\um\GL/gl.h
+  Note: including file: c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\../../../_dependencies/GL/glfw3.h
+  Note: including file:  C:\Program Files (x86)\Windows Kits\8.1\Include\um\GL/gl.h
+  Note: including file: c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\../../include/engine/engine.h
+  Note: including file: c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\../../include/engine/event.h
+  Note: including file:  c:\users\zach\documents\github\mythos\mythos\mythos\include\engine\../utility/matrix.h
+  Note: including file: c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\../../include/engine/options.h
+  Note: including file: c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\../../include/engine/state.h
+  Note: including file:  c:\users\zach\documents\github\mythos\mythos\mythos\include\engine\widget.h
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\list
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\stdexcept
+  Note: including file:   C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\unordered_map
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xhash
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\vector
+  Note: including file:   c:\users\zach\documents\github\mythos\mythos\mythos\include\engine\texture.h
+  Note: including file:    C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\string
+  Note: including file:     C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\istream
+  Note: including file:      C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ostream
+  Note: including file:       C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\ios
+  Note: including file:        C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocnum
+  Note: including file:         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\streambuf
+  Note: including file:          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xiosbase
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocale
+  Note: including file:            C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocinfo
+  Note: including file:             C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocinfo.h
+  Note: including file:              C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\ctype.h
+  Note: including file:              C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\locale.h
+  Note: including file:            C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xfacet
+  Note: including file:           C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\system_error
+  Note: including file:            C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cerrno
+  Note: including file:           C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\share.h
+  Note: including file: c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\../../include/engine/functions/mouse_handlers.h
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(104): error C2338: period not an instance of std::ratio
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\engine.cpp(82): note: see reference to class template instantiation 'std::chrono::duration<int,std::chrono::milliseconds>' being compiled
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(105): error C2039: 'num': is not a member of 'std::chrono::duration<__int64,std::milli>'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(793): note: see declaration of 'std::chrono::duration<__int64,std::milli>'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(105): error C2065: 'num': undeclared identifier
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(306): error C2039: 'num': is not a member of 'std::chrono::duration<__int64,std::milli>'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(793): note: see declaration of 'std::chrono::duration<__int64,std::milli>'
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\engine.cpp(83): note: see reference to class template instantiation 'std::common_type<std::chrono::steady_clock::duration,std::chrono::duration<int,std::chrono::milliseconds>>' being compiled
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(306): error C2065: 'num': undeclared identifier
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(306): error C2975: '_Bx': invalid template argument for 'std::_Gcd', expected compile-time constant expression
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\ratio(91): note: see declaration of '_Bx'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(307): error C2039: 'den': is not a member of 'std::chrono::duration<__int64,std::milli>'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(793): note: see declaration of 'std::chrono::duration<__int64,std::milli>'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(307): error C2065: 'den': undeclared identifier
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(307): error C2975: '_Bx': invalid template argument for 'std::_Lcm', expected compile-time constant expression
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(289): note: see declaration of '_Bx'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\ratio(110): error C2338: zero denominator
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(105): note: see reference to class template instantiation 'std::ratio<1,0>' being compiled
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(231): note: see reference to class template instantiation 'std::chrono::duration<__int64,std::ratio<1,0>>' being compiled
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\engine.cpp(83): note: see reference to class template instantiation 'std::chrono::time_point<std::chrono::steady_clock,std::chrono::duration<__int64,std::ratio<1,0>>>' being compiled
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\engine.cpp(83): error C2440: 'initializing': cannot convert from 'std::chrono::time_point<std::chrono::steady_clock,std::chrono::duration<__int64,std::ratio<1,0>>>' to 'std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration>'
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\engine.cpp(83): note: No constructor could take the source type, or constructor overload resolution was ambiguous
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\engine.cpp(90): error C2679: binary '=': no operator found which takes a right-hand operand of type 'std::chrono::time_point<std::chrono::steady_clock,std::chrono::duration<__int64,std::ratio<1,0>>>' (or there is no acceptable conversion)
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(284): note: could be 'std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration> &std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration>::operator =(std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration> &&)'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(284): note: or       'std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration> &std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration>::operator =(const std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration> &)'
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\engine.cpp(90): note: while trying to match the argument list '(std::chrono::steady_clock::time_point, std::chrono::time_point<std::chrono::steady_clock,std::chrono::duration<__int64,std::ratio<1,0>>>)'
+c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\engine.cpp(92): error C2679: binary '=': no operator found which takes a right-hand operand of type 'std::chrono::time_point<std::chrono::steady_clock,std::chrono::duration<__int64,std::ratio<1,0>>>' (or there is no acceptable conversion)
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(284): note: could be 'std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration> &std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration>::operator =(std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration> &&)'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\chrono(284): note: or       'std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration> &std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration>::operator =(const std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration> &)'
+  c:\users\zach\documents\github\mythos\mythos\mythos\src\engine\engine.cpp(92): note: while trying to match the argument list '(std::chrono::steady_clock::time_point, std::chrono::time_point<std::chrono::steady_clock,std::chrono::duration<__int64,std::ratio<1,0>>>)'
   Generating Code...
-  mythos.vcxproj -> C:\Users\Zach\Documents\GitHub\mythos\mythos\Debug\mythos.exe
