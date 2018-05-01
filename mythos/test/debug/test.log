@@ -1,2 +1,0 @@
-﻿  main.cpp
-c:\users\zach\documents\github\mythos\mythos\_dependencies\gl\glew.h(85): fatal error C1189: #error:  gl.h included before glew.h
