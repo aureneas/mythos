@@ -1,3 +1,0 @@
-﻿main.obj : error LNK2019: unresolved external symbol "void __cdecl mythos_core::init(struct MythosOptions *)" (?init@mythos_core@@YAXPAUMythosOptions@@@Z) referenced in function _main
-main.obj : error LNK2019: unresolved external symbol "void __cdecl mythos_core::shutdown(void)" (?shutdown@mythos_core@@YAXXZ) referenced in function _main
-C:\Users\Zach\Documents\GitHub\mythos\mythos\_vs\mythos\Debug\debug.exe : fatal error LNK1120: 2 unresolved externals

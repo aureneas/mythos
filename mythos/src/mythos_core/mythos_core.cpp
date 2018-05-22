@@ -1,69 +1,88 @@
-#include <GL/glew.h>
-#include <GL/glfw3.h>
+#include <stdlib.h> // TODO i don't remember what i used this for
+	// maybe it was for <chrono> ??
+#include <thread>
+#include <ctime>
 
 #include "mythos_core.h"
 
-namespace mythos_core {
 
-	GLFWwindow*		glWindow;
-	MythosOptions*	opt;
+MythosWindow* __MYTHOS_ROOT_WINDOW = nullptr;
 
-	void init(MythosOptions* popt) {
 
-		shutdown();
-		opt = popt;
+MYTHOS_API void mythosInit() {
 
-		// Initialize GL libraries
+	// Initialize GL libraries
 
-		if (!glfwInit())
-			throw "GLFW failed to initialize.";
-
-		glWindow = glfwCreateWindow(opt->windowWidth, opt->windowHeight, opt->windowTitle, nullptr, nullptr);
-		if (!glWindow) {
-			shutdown();
-			throw "GLFW window failed to initialize.";
-		}
-
-		glfwMakeContextCurrent(glWindow);
-		glewExperimental = true;
-
-		if (glewInit() != GLEW_OK) {
-			shutdown();
-			throw "GLEW failed to initialize.";
-		}
-
-		// Initialize display stuff
-
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		glViewport(0, 0, opt->windowWidth, opt->windowHeight);
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glPushMatrix();
-		glOrtho(0.0, opt->windowWidth, 0.0, opt->windowHeight, 100.1, -0.1);
-		glTranslated(0.0, opt->windowHeight, 0.0);
-		glScaled(opt->windowXRes, -opt->windowYRes, 1.0);
-
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-
-		glDisable(GL_LIGHTING);
-		glDisable(GL_LIGHT0);
-	}
-
-	void shutdown() {
-
-		// Free up stuff
-
-		if (glWindow)
-			glfwDestroyWindow(glWindow);
-
-		glfwTerminate();
-
-	}
-
+	if (!glfwInit())
+		throw "GLFW failed to initialize.";
 }
 
 
-int main() { return 0; }
+bool __MYTHOS_DO_NOT_TERMINATE_LOOP_FRAME;
+
+void __mythosLoopFrame(void) {
+
+	int frames_per_second = 60;
+
+	std::chrono::duration<int, std::milli> frame_duration((int)std::round(1000.0 / frames_per_second));
+	std::chrono::steady_clock::time_point nclock = std::chrono::steady_clock::now() + frame_duration;
+
+	while (__MYTHOS_DO_NOT_TERMINATE_LOOP_FRAME) {
+		std::chrono::steady_clock::time_point cclock = std::chrono::steady_clock::now();
+		if (cclock > nclock)
+			nclock = cclock + frame_duration - ((cclock - nclock) % frame_duration);
+		std::this_thread::sleep_until(nclock);
+		nclock = nclock + frame_duration;
+
+		// update frame
+		__MYTHOS_ROOT_WINDOW->update();
+
+		// render frame
+		__MYTHOS_ROOT_WINDOW->render();
+	}
+}
+
+MYTHOS_API void mythosRun(MythosWindow* window) {
+
+	__MYTHOS_ROOT_WINDOW = window;
+
+	std::thread frameThread(__mythosLoopFrame);
+
+	do {
+
+		glfwWaitEvents();
+
+	} while (!glfwWindowShouldClose(window->getWindow()));
+
+	__MYTHOS_DO_NOT_TERMINATE_LOOP_FRAME = false;
+	frameThread.join();
+
+	mythosExit();
+}
+
+
+MYTHOS_API void mythosExit() {
+
+	glfwTerminate();
+}
+
+
+
+/*
+ *	Window creation and destruction functions.
+ */
+
+MYTHOS_API MythosWindow* mythosCreateRootWindow(int width, int height, const char* title) {
+
+	return new MythosWindow(width, height, title);
+}
+
+MYTHOS_API MythosWindow* mythosCreateChildWindow(MythosWindow* window, int width, int height, const char* title) {
+
+	return new MythosChildWindow(window, width, height, title);
+}
+
+MYTHOS_API void mythosDestroyWindow(MythosWindow* mWindow) {
+
+	delete mWindow;
+}

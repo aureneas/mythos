@@ -4,7 +4,7 @@
 #include <string>
 
 struct MythosOptions {
-	const char*		windowTitle;
+	std::string		windowTitle;
 
 	int				windowWidth;
 	int				windowHeight;
@@ -12,7 +12,8 @@ struct MythosOptions {
 	double			windowXRes;
 	double			windowYRes;
 
-	MythosOptions() : windowTitle("DEFAULT TITLE") {
+	MythosOptions(std::string title) {
+		windowTitle = title;
 		windowWidth = 320;
 		windowHeight = 240;
 		windowXRes = 1.0;
