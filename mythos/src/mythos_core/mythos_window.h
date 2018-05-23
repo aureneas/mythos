@@ -1,34 +1,39 @@
 #pragma once
 
 #include <string>
-#include <vector>
-#include "mythos_important_stuff.h"
+#include <list>
+#include "mythos_widget.h"
 
 
-class MYTHOS_API MythosWindow {
+class MythosWindow;
+
+typedef std::shared_ptr<MythosWindow>	MythosWindowPtr;
+typedef std::vector<MythosWindowPtr>	MythosWindowPtrVector;
+
+class MYTHOS_API MythosWindow : public MythosContainerWidget {
 	private:
 
-		typedef std::vector<MythosWindow*> __ChildVector;
+		MythosWindowPtrVector	mChildren;
 
-		__ChildVector	mChildren;
+		GLFWwindow*				mWindow;
 
-		GLFWwindow*		mWindow;
+		const char*				mTitle;
 
-		const char*		mTitle;
+		int						mWidth;
+		int						mHeight;
 
-		int				mWidth;
-		int				mHeight;
-
-		double			mXRes;
-		double			mYRes;
+		double					mXRes;
+		double					mYRes;
 
 	public:
 
-		MythosWindow(int, int, const char*, MythosWindow* = nullptr);
+		MythosWindow(int, int, const char*);
 
 		virtual ~MythosWindow(void);
 
 		GLFWwindow* getWindow(void) { return mWindow; }
+
+		MythosWindow* findWindow(GLFWwindow*);
 
 		void setDimensions(int, int);
 
@@ -46,13 +51,15 @@ class MYTHOS_API MythosWindow {
 
 		double getYResolution(void) { return mYRes; }
 
-		virtual MythosWindow* getParent(void) { return nullptr; }
+		virtual MythosWindow* getParentWindow(void) { return nullptr; }
 
-		void addChild(MythosWindow*);
+		void addChildWindow(MythosWindow*);
 
-		void removeChild(MythosWindow*);
+		void removeChildWindow(MythosWindow*);
 
 		void update(void);
+
+		MYTHOS_EVENT_RETURN update(MYTHOS_EVENT_KEY, const MythosEvent&);
 
 		void render(void);
 };
@@ -60,7 +67,7 @@ class MYTHOS_API MythosWindow {
 class MythosChildWindow : public MythosWindow {
 	private:
 
-		MythosWindow*		mParent;
+		MythosWindow*			mParentWindow;
 
 	public:
 
@@ -68,5 +75,14 @@ class MythosChildWindow : public MythosWindow {
 
 		~MythosChildWindow(void);
 
-		MythosWindow* getParent() { return mParent; }
+		MythosWindow* getParentWindow() { return mParentWindow; }
 };
+
+
+MYTHOS_API MythosWindow* mythosCreateRootWindow(int, int, const char*);
+
+MYTHOS_API MythosWindow* mythosCreateChildWindow(MythosWindow*, int, int, const char*);
+
+MYTHOS_API void mythosDestroyWindow(MythosWindow*); 
+
+MythosWindow* mythosFindWindow(GLFWwindow*);

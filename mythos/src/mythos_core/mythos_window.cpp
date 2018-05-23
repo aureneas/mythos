@@ -1,8 +1,71 @@
 #include "mythos_window.h"
 
-bool _GLEW_NOT_INITIALIZED = true;
 
-MythosWindow::MythosWindow(int width, int height, const char* title, MythosWindow* contextSharing) : mTitle(title) {
+MythosWindowPtrVector __MYTHOS_ROOT_WINDOWS;
+
+MYTHOS_API MythosWindow* mythosCreateRootWindow(int width, int height, const char* title) {
+
+	MythosWindow* window = new MythosWindow(width, height, title);
+
+	__MYTHOS_ROOT_WINDOWS.emplace_back(window);
+
+	return window;
+}
+
+MYTHOS_API MythosWindow* mythosCreateChildWindow(MythosWindow* window, int width, int height, const char* title) {
+
+	if (window == nullptr)
+		throw "Window cannot be child of NULL.";
+	
+	return new MythosChildWindow(window, width, height, title);
+}
+
+MYTHOS_API void mythosDestroyWindow(MythosWindow* window) {
+
+	if (window->getParentWindow() == nullptr) {
+		
+		for (MythosWindowPtrVector::iterator it = __MYTHOS_ROOT_WINDOWS.begin(); it != __MYTHOS_ROOT_WINDOWS.end(); ++it) {
+
+			if (it->get() == window) {
+				__MYTHOS_ROOT_WINDOWS.erase(it);
+				break;
+			}
+		}
+	}
+}
+
+MythosWindow* mythosFindWindow(GLFWwindow* window) {
+
+	for (MythosWindowPtrVector::iterator it = __MYTHOS_ROOT_WINDOWS.begin(); it != __MYTHOS_ROOT_WINDOWS.end(); ++it) {
+
+		MythosWindow* res = (*it)->findWindow(window);
+		if (res)
+			return res;
+	}
+
+	return nullptr;
+}
+
+
+
+bool __MYTHOS_NOT_INITIALIZED = true;
+
+/* Like mythosInit(), but more secret :P */
+void mythosSecretInit() {
+
+	// TODO: leave in next line or not?
+	glewExperimental = true;
+
+	if (glewInit() != GLEW_OK) {
+		// mythos_exit();
+		throw "GLEW failed to initialize.";
+	}
+
+	__MYTHOS_NOT_INITIALIZED = false;
+}
+
+
+MythosWindow::MythosWindow(int width, int height, const char* title) : mTitle(title) {
 
 	mXRes = 1.0;
 	mYRes = 1.0;
@@ -12,26 +75,18 @@ MythosWindow::MythosWindow(int width, int height, const char* title, MythosWindo
 		height,
 		mTitle, 
 		nullptr, 
-		(contextSharing ? contextSharing->mWindow : nullptr)
+		(__MYTHOS_ROOT_WINDOWS.size() > 0 ? __MYTHOS_ROOT_WINDOWS.front()->getWindow() : nullptr)
 	);
 
 	if (!mWindow)
 		throw "GLFW window failed to initialize.";
 
-	glfwMakeContextCurrent(mWindow);
 
+	if (__MYTHOS_NOT_INITIALIZED) {
 
-	if (_GLEW_NOT_INITIALIZED) {
+		glfwMakeContextCurrent(mWindow);
 
-		// TODO: leave in next line or not?
-		glewExperimental = true;
-
-		if (glewInit() != GLEW_OK) {
-			// mythos_exit();
-			throw "GLEW failed to initialize.";
-		}
-
-		_GLEW_NOT_INITIALIZED = false;
+		mythosSecretInit();
 	}
 
 
@@ -39,19 +94,33 @@ MythosWindow::MythosWindow(int width, int height, const char* title, MythosWindo
 	glPushMatrix();
 
 	setDimensions(width, height);
+
+
+	glfwSetKeyCallback(mWindow, mythosKeyCallback);
+	glfwSetCursorPosCallback(mWindow, mythosMouseMoveCallback);
+	glfwSetMouseButtonCallback(mWindow, mythosMouseButtonCallback);
+	glfwSetCursorEnterCallback(mWindow, mythosMouseEnterCallback);
 }
-
-
 
 MythosWindow::~MythosWindow() {
 
-	__ChildVector children = mChildren;
-	
-	for (__ChildVector::iterator it = children.begin(); it != children.end(); ++it) 
-		delete *it;
-	
 	if (mWindow)
 		glfwDestroyWindow(mWindow);
+}
+
+MythosWindow* MythosWindow::findWindow(GLFWwindow* window) {
+
+	if (window == mWindow)
+		return this;
+
+	for (MythosWindowPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
+
+		MythosWindow* res = (*it)->findWindow(window);
+		if (res)
+			return res;
+	}
+
+	return nullptr;
 }
 
 void MythosWindow::setDimensions(int width, int height) {
@@ -112,16 +181,16 @@ void MythosWindow::setResolution(double xRes, double yRes) {
 }
 
 
-void MythosWindow::addChild(MythosWindow* child) {
+void MythosWindow::addChildWindow(MythosWindow* child) {
 	
-	mChildren.push_back(child);
+	mChildren.emplace_back(child);
 }
 
-void MythosWindow::removeChild(MythosWindow* child) {
+void MythosWindow::removeChildWindow(MythosWindow* child) {
 
-	for (__ChildVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
+	for (MythosWindowPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
 		
-		if (*it == child) {
+		if (it->get() == child) {
 			mChildren.erase(it);
 			break;
 		}
@@ -131,10 +200,26 @@ void MythosWindow::removeChild(MythosWindow* child) {
 
 void MythosWindow::update(void) {
 
-	// TODO update per frame
+	MythosContainerWidget::update();
 
-	for (__ChildVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it)
+	for (MythosWindowPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it)
 		(*it)->update();
+}
+
+MYTHOS_EVENT_RETURN MythosWindow::update(MYTHOS_EVENT_KEY key, const MythosEvent& ptr) {
+
+	MYTHOS_EVENT_RETURN res = MythosContainerWidget::update(key, ptr);
+
+	MythosWindowPtrVector::iterator it = mChildren.begin();
+
+	while (it != mChildren.end() && res == MYTHOS_CONTINUE) {
+
+		res = (*it)->update(key, ptr);
+
+		++it;
+	}
+
+	return res;
 }
 
 void MythosWindow::render(void) {
@@ -143,24 +228,24 @@ void MythosWindow::render(void) {
 	glClear(GL_COLOR_BUFFER_BIT);
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); TODO figure out which i need
 
-	// TODO the actual rendering
+	MythosContainerWidget::render();
 
 	glfwSwapBuffers(mWindow);
 
-	for (__ChildVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it)
+	for (MythosWindowPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it)
 		(*it)->render();
 }
 
 
 MythosChildWindow::MythosChildWindow(MythosWindow* parent, int width, int height, const char* title) : MythosWindow(width, height, title) {
 
-	mParent = parent;
-	mParent->addChild(this);
+	mParentWindow = parent;
+	mParentWindow->addChildWindow(this);
 }
 
 MythosChildWindow::~MythosChildWindow() {
 	
-	mParent->removeChild(this);
+	mParentWindow->removeChildWindow(this);
 
 	MythosWindow::~MythosWindow();
 }

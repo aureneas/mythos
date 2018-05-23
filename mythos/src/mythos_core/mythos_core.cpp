@@ -65,24 +65,3 @@ MYTHOS_API void mythosExit() {
 
 	glfwTerminate();
 }
-
-
-
-/*
- *	Window creation and destruction functions.
- */
-
-MYTHOS_API MythosWindow* mythosCreateRootWindow(int width, int height, const char* title) {
-
-	return new MythosWindow(width, height, title);
-}
-
-MYTHOS_API MythosWindow* mythosCreateChildWindow(MythosWindow* window, int width, int height, const char* title) {
-
-	return new MythosChildWindow(window, width, height, title);
-}
-
-MYTHOS_API void mythosDestroyWindow(MythosWindow* mWindow) {
-
-	delete mWindow;
-}
