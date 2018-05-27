@@ -5,22 +5,24 @@
 
 #include "mythos_core.h"
 
+#include <iostream>
+#include "shaders\mythos_shader.h"
 
-MythosWindow* __MYTHOS_ROOT_WINDOW = nullptr;
 
-
-MYTHOS_API void mythosInit() {
+MYTHOS_CORE_API void mythosInit() {
 
 	// Initialize GL libraries
 
+	glewExperimental = true; // we need this because we're using GLFW
+
 	if (!glfwInit())
-		throw "GLFW failed to initialize.";
+		throw MythosError("GLFW failed to initialize.");
 }
 
 
-bool __MYTHOS_DO_NOT_TERMINATE_LOOP_FRAME;
+bool __MYTHOS_DO_NOT_TERMINATE_LOOP_FRAME = true;
 
-void __mythosLoopFrame(void) {
+void __mythosLoopFrame(MythosWindow* window) {
 
 	int frames_per_second = 60;
 
@@ -35,33 +37,44 @@ void __mythosLoopFrame(void) {
 		nclock = nclock + frame_duration;
 
 		// update frame
-		__MYTHOS_ROOT_WINDOW->update();
+		mythosTimerCallback(window);
 
-		// render frame
-		__MYTHOS_ROOT_WINDOW->render();
+		// render in the event loop
+		glfwPostEmptyEvent();
 	}
 }
 
-MYTHOS_API void mythosRun(MythosWindow* window) {
+void __mythosLoopEvent(MythosWindow* window) {
 
-	__MYTHOS_ROOT_WINDOW = window;
+	GLFWwindow* glWindow = window->getWindow();
 
-	std::thread frameThread(__mythosLoopFrame);
+	glfwMakeContextCurrent(glWindow);
 
-	do {
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+	while (!glfwWindowShouldClose(glWindow)) {
 
 		glfwWaitEvents();
 
-	} while (!glfwWindowShouldClose(window->getWindow()));
+		// render frame
+		window->render();
+	}
 
 	__MYTHOS_DO_NOT_TERMINATE_LOOP_FRAME = false;
-	frameThread.join();
+}
+
+MYTHOS_CORE_API void mythosRun(MythosWindow* window) {
+
+	std::thread frameThread(__mythosLoopFrame, window);
+	frameThread.detach();
+	
+	__mythosLoopEvent(window);
 
 	mythosExit();
 }
 
 
-MYTHOS_API void mythosExit() {
+MYTHOS_CORE_API void mythosExit() {
 
 	glfwTerminate();
 }

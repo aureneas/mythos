@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <unordered_map>
-#include <vector>
+#include <forward_list>
 #include "mythos_important_stuff.h"
 #include "mythos_event.h"
 
@@ -16,7 +16,7 @@ typedef MYTHOS_EVENT_RETURN(*MythosEventFunc)(MythosWidget*, const MythosEvent&)
 typedef std::unordered_map<MYTHOS_EVENT_KEY, MythosEventFunc> MythosEventFuncMap;
 
 
-class MYTHOS_API MythosWidget {
+class MYTHOS_CORE_API MythosWidget {
 
 	private:
 
@@ -24,9 +24,15 @@ class MYTHOS_API MythosWidget {
 
 		MythosEventFuncMap			mEvents;
 
+	protected:
+
+		vec2f						mPos;
+
 	public:
 
-		virtual void				update(void) {}
+		MythosWidget(vec2f);
+
+		virtual int					inBounds(vec2f&) { return false; }
 
 		virtual MYTHOS_EVENT_RETURN	update(MYTHOS_EVENT_KEY, const MythosEvent&);
 
@@ -45,7 +51,7 @@ class MYTHOS_API MythosWidget {
 typedef std::shared_ptr<MythosWidget>		MythosWidgetPtr;
 typedef std::list<MythosWidgetPtr>			MythosWidgetPtrVector;
 
-class MYTHOS_API MythosContainerWidget : public MythosWidget {
+class MYTHOS_CORE_API MythosContainerWidget : public MythosWidget {
 
 	protected:
 
@@ -53,13 +59,17 @@ class MYTHOS_API MythosContainerWidget : public MythosWidget {
 
 	public:
 
-		virtual void update(void);
+		MythosContainerWidget(vec2f);
+		
+		virtual int					inBounds(vec2f&);
 
 		virtual MYTHOS_EVENT_RETURN update(MYTHOS_EVENT_KEY, const MythosEvent&);
 
-		virtual void render(void);
+		virtual void				render(void);
 
-		void addChildWidget(MythosWidget*);
+		void						addChildWidget(MythosWidget*);
 
-		void removeChildWidget(MythosWidget*);
+		void						removeChildWidget(MythosWidget*);
+
+		void						bumpChildWidget(MythosWidget*);
 };

@@ -5,12 +5,16 @@
 #include "mythos_widget.h"
 
 
+#define MYTHOS_NEAR		0.0
+#define MYTHOS_FAR		1000.0
+
+
 class MythosWindow;
 
 typedef std::shared_ptr<MythosWindow>	MythosWindowPtr;
 typedef std::vector<MythosWindowPtr>	MythosWindowPtrVector;
 
-class MYTHOS_API MythosWindow : public MythosContainerWidget {
+class MYTHOS_CORE_API MythosWindow : public MythosContainerWidget {
 	private:
 
 		MythosWindowPtrVector	mChildren;
@@ -24,6 +28,7 @@ class MYTHOS_API MythosWindow : public MythosContainerWidget {
 
 		double					mXRes;
 		double					mYRes;
+		bool					mIntRes;
 
 	public:
 
@@ -45,6 +50,8 @@ class MYTHOS_API MythosWindow : public MythosContainerWidget {
 
 		const char* getTitle(void) { return mTitle; }
 
+		void setResolution(int, int);
+
 		void setResolution(double, double);
 
 		double getXResolution(void) { return mXRes; }
@@ -56,8 +63,6 @@ class MYTHOS_API MythosWindow : public MythosContainerWidget {
 		void addChildWindow(MythosWindow*);
 
 		void removeChildWindow(MythosWindow*);
-
-		void update(void);
 
 		MYTHOS_EVENT_RETURN update(MYTHOS_EVENT_KEY, const MythosEvent&);
 
@@ -79,10 +84,13 @@ class MythosChildWindow : public MythosWindow {
 };
 
 
-MYTHOS_API MythosWindow* mythosCreateRootWindow(int, int, const char*);
+MYTHOS_CORE_API MythosWindow* mythosCreateRootWindow(int, int, const char*);
 
-MYTHOS_API MythosWindow* mythosCreateChildWindow(MythosWindow*, int, int, const char*);
+MYTHOS_CORE_API MythosWindow* mythosCreateChildWindow(MythosWindow*, int, int, const char*);
 
-MYTHOS_API void mythosDestroyWindow(MythosWindow*); 
+MYTHOS_CORE_API void mythosDestroyWindow(MythosWindow*); 
 
 MythosWindow* mythosFindWindow(GLFWwindow*);
+
+
+void mythosTimerCallback(MythosWindow*);

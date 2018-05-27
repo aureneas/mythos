@@ -28,6 +28,11 @@ MythosMouseEvent	__MYTHOS_MOUSE_EVENT;
 MythosEvent			__MYTHOS_EVENT(__MYTHOS_KEY_EVENT, __MYTHOS_MOUSE_EVENT);
 
 
+void mythosTimerCallback(MythosWindow* window) {
+
+	window->update(MYTHOS_TIMER, __MYTHOS_EVENT);
+}
+
 void mythosKeyCallback(GLFWwindow* glWindow, int key, int scancode, int action, int mods) {
 
 	MythosWindow* window = mythosFindWindow(glWindow);
@@ -51,8 +56,8 @@ void mythosMouseMoveCallback(GLFWwindow* glWindow, double x, double y) {
 
 	if (window) {
 
-		__MYTHOS_MOUSE_EVENT.x = x;
-		__MYTHOS_MOUSE_EVENT.y = y;
+		__MYTHOS_MOUSE_EVENT.x = (int)std::round(x);
+		__MYTHOS_MOUSE_EVENT.y = (int)std::round(y);
 
 		window->update(MYTHOS_MOUSE_MOVE, __MYTHOS_EVENT);
 	}
