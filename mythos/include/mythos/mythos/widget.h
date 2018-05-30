@@ -3,73 +3,95 @@
 #include <memory>
 #include <unordered_map>
 #include <forward_list>
-#include "mythos_important_stuff.h"
-#include "mythos_event.h"
-
-
-class MythosWidget;
-class MythosContainerWidget;
-
-
-typedef MYTHOS_EVENT_RETURN(*MythosEventFunc)(MythosWidget*, const MythosEvent&);
-
-typedef std::unordered_map<MYTHOS_EVENT_KEY, MythosEventFunc> MythosEventFuncMap;
+#include "_important_stuff.h"
+#include "event.h"
+#include "utility\container.h"
 
 
 class MYTHOS_CORE_API MythosWidget {
 
 	private:
 
-		MythosContainerWidget*		mParent = nullptr;
-
-		MythosEventFuncMap			mEvents;
-
-	protected:
-
-		vec2f						mPos;
+		MythosContainer<MythosWidget>*	mParent = nullptr;
 
 	public:
 
-		MythosWidget(vec2f);
+		MythosWidget() {}
 
-		virtual int					inBounds(vec2f&) { return false; }
+		virtual int						inBounds(const vec2f&) { return false; }
 
-		virtual MYTHOS_EVENT_RETURN	update(MYTHOS_EVENT_KEY, const MythosEvent&);
+		virtual MYTHOS_EVENT_RETURN		update(MYTHOS_EVENT_KEY, const MythosEvent&) { return MYTHOS_CONTINUE; }
 
-		virtual void				render(void) {}
+		virtual void					render(void) {}
 
-		void						setParent(MythosContainerWidget*);
+		void							setParent(MythosContainer<MythosWidget>*);
 
-		MythosContainerWidget*		getParent(void) { return mParent; }
-
-		void						setEventFunc(MYTHOS_EVENT_KEY, MythosEventFunc);
-
-		MythosEventFunc				getEventFunc(MYTHOS_EVENT_KEY);
+		MythosContainer<MythosWidget>*	getParent(void) { return mParent; }
 };
 
 
 typedef std::shared_ptr<MythosWidget>		MythosWidgetPtr;
 typedef std::list<MythosWidgetPtr>			MythosWidgetPtrVector;
 
-class MYTHOS_CORE_API MythosContainerWidget : public MythosWidget {
+class MYTHOS_CORE_API MythosWidgetContainer : public MythosContainer<MythosWidget> {
 
 	protected:
 
-		MythosWidgetPtrVector		mChildren;
+		MythosWidgetPtrVector			mChildren;
 
 	public:
 
-		MythosContainerWidget(vec2f);
+		virtual int						inBounds(const vec2f&);
+
+		virtual MYTHOS_EVENT_RETURN		update(MYTHOS_EVENT_KEY, const MythosEvent&);
+
+		virtual void					render(void);
+
+		MythosContainer<MythosWidget>*	addChild(MythosWidget*);
 		
-		virtual int					inBounds(vec2f&);
+		void							removeChild(MythosWidget*);
 
-		virtual MYTHOS_EVENT_RETURN update(MYTHOS_EVENT_KEY, const MythosEvent&);
+		void							bumpChild(MythosWidget*);
+};
 
-		virtual void				render(void);
 
-		void						addChildWidget(MythosWidget*);
 
-		void						removeChildWidget(MythosWidget*);
+typedef MYTHOS_EVENT_RETURN(*MythosEventFunc)(MythosWidget*, const MythosEvent&);
 
-		void						bumpChildWidget(MythosWidget*);
+typedef std::unordered_map<MYTHOS_EVENT_KEY, MythosEventFunc> MythosEventFuncMap;
+
+class MYTHOS_CORE_API MythosGenericWidget : public MythosWidget {
+
+	private:
+
+		MythosEventFuncMap				mEvents;
+
+	protected:
+
+		vec2f							mPos;
+
+	public:
+
+		MythosGenericWidget(vec2f);
+
+		virtual MYTHOS_EVENT_RETURN		update(MYTHOS_EVENT_KEY, const MythosEvent&);
+
+		void							setEventFunc(MYTHOS_EVENT_KEY, MythosEventFunc);
+
+		MythosEventFunc					getEventFunc(MYTHOS_EVENT_KEY);
+};
+
+
+
+class MYTHOS_CORE_API MythosGenericContainerWidget : public MythosGenericWidget, public MythosWidgetContainer {
+
+	public:
+
+		MythosGenericContainerWidget(vec2f);
+		
+		virtual int						inBounds(const vec2f&);
+
+		virtual MYTHOS_EVENT_RETURN		update(MYTHOS_EVENT_KEY, const MythosEvent&);
+
+		virtual void					render(void);
 };

@@ -1,26 +1,31 @@
 #pragma once
 
 #include <unordered_set>
-#include "mythos_important_stuff.h"
+#include "_important_stuff.h"
 #include "utility/matrix.h"
 
-enum MYTHOS_EVENT_KEY : int {
-	MYTHOS_TIMER = 100,
-	MYTHOS_KEY_PRESS = GLFW_PRESS,
-	MYTHOS_KEY_REPEAT = GLFW_REPEAT,
-	MYTHOS_KEY_RELEASE = GLFW_RELEASE,
-	MYTHOS_MOUSE_PRESS = GLFW_PRESS + 3,
-	MYTHOS_MOUSE_RELEASE = GLFW_RELEASE + 3,
-	MYTHOS_MOUSE_MOVE = 5,
-	MYTHOS_MOUSE_ENTER = 6,
-	MYTHOS_MOUSE_EXIT = 7
-};
+
+#define MYTHOS_TIMER			100
+#define MYTHOS_KEY_PRESS		1
+#define MYTHOS_KEY_REPEAT		2
+#define MYTHOS_KEY_RELEASE		0
+#define MYTHOS_MOUSE_PRESS		4
+#define MYTHOS_MOUSE_RELEASE	3
+#define MYTHOS_MOUSE_MOVE		5
+#define MYTHOS_MOUSE_ENTER		6
+#define MYTHOS_MOUSE_EXIT		7
+
+typedef int MYTHOS_EVENT_KEY;
+
 
 enum MYTHOS_EVENT_RETURN : int {
 	MYTHOS_ERROR,
 	MYTHOS_CONTINUE,
 	MYTHOS_STOP
 };
+
+
+class MythosWidget;
 
 
 typedef std::unordered_set<int> HeldButtonsSet;
@@ -48,12 +53,15 @@ class MYTHOS_CORE_API MythosKeyEvent : public MythosButtonEvent {
 		int mods;
 };
 
-class MYTHOS_CORE_API MythosMouseEvent : public MythosButtonEvent, public vec2i {
+class MYTHOS_CORE_API MythosMouseEvent : public MythosButtonEvent, public vec2f {
 	
 	public:
 
-		int button;
-		int mods;
+		int				button;
+		int				mods;
+
+		MythosWidget*	drag;
+		vec2f			dragDisplacement;
 };
 
 struct MYTHOS_CORE_API MythosEvent {

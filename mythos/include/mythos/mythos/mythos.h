@@ -1,8 +1,7 @@
 #pragma once
 
-#include "mythos_important_stuff.h"
-#include "mythos_window.h"
-#include "texture/mythos_texture.h"
+#include "_important_stuff.h"
+#include "window.h"
 
 MYTHOS_CORE_API void mythosInit(void);
 

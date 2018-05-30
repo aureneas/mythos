@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "mythos_important_stuff.h"
+#include "_important_stuff.h"
 
 
 class MYTHOS_CORE_API MythosError {
