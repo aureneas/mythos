@@ -1,4 +1,4 @@
-#include "mythos_shader_sources.h"
+#include <mythos\shaders\shader_sources.h>
 
 
 const char* __mythosImageShaderVertexSource = R"glsl(

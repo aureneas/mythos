@@ -1,7 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include "mythos_shader.h"
+#include <mythos\shaders\shader.h>
 
 #include <iostream>
 

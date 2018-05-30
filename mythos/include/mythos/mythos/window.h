@@ -2,11 +2,11 @@
 
 #include <string>
 #include <list>
-#include "mythos_widget.h"
+#include "widget.h"
 
 
-#define MYTHOS_NEAR		0.0
-#define MYTHOS_FAR		1000.0
+#define MYTHOS_NEAR		0.0f
+#define MYTHOS_FAR		1000.0f
 
 
 class MythosWindow;
@@ -14,7 +14,8 @@ class MythosWindow;
 typedef std::shared_ptr<MythosWindow>	MythosWindowPtr;
 typedef std::vector<MythosWindowPtr>	MythosWindowPtrVector;
 
-class MYTHOS_CORE_API MythosWindow : public MythosContainerWidget {
+class MYTHOS_CORE_API MythosWindow : public MythosGenericContainerWidget {
+
 	private:
 
 		MythosWindowPtrVector	mChildren;
@@ -26,9 +27,8 @@ class MYTHOS_CORE_API MythosWindow : public MythosContainerWidget {
 		int						mWidth;
 		int						mHeight;
 
-		double					mXRes;
-		double					mYRes;
-		bool					mIntRes;
+		float					mXRes;
+		float					mYRes;
 
 	public:
 
@@ -50,13 +50,11 @@ class MYTHOS_CORE_API MythosWindow : public MythosContainerWidget {
 
 		const char* getTitle(void) { return mTitle; }
 
-		void setResolution(int, int);
+		void setResolution(float, float);
 
-		void setResolution(double, double);
+		float getXResolution(void) { return mXRes; }
 
-		double getXResolution(void) { return mXRes; }
-
-		double getYResolution(void) { return mYRes; }
+		float getYResolution(void) { return mYRes; }
 
 		virtual MythosWindow* getParentWindow(void) { return nullptr; }
 

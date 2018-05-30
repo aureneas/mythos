@@ -1,6 +1,6 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
-#include "mythos_error.h"
+#include <mythos\error.h>
 
 
 MythosError::MythosError(const char* message) : MythosError(std::string("Error"), std::string(message)) {}

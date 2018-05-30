@@ -1,14 +1,103 @@
-#include "mythos_widget.h"
-#include "mythos_window.h"
-#include "utility/mythos_stack.h"
+#include <mythos\widget.h>
+#include <mythos\window.h>
+#include <mythos\utility\stack.h>
 
 
-MythosWidget::MythosWidget(vec2f pos) {
+void MythosWidget::setParent(MythosContainer<MythosWidget>* parent) {
+
+	if (mParent)
+		mParent->removeChild(this);
+	mParent = parent;
+	if (mParent)
+		mParent->addChild(this);
+}
+
+
+int MythosWidgetContainer::inBounds(const vec2f& pos) {
+
+	for (MythosWidgetPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
+
+		if ((*it)->inBounds(pos))
+			return MYTHOS_TRUE;
+	}
+
+	return MYTHOS_FALSE;
+}
+
+MYTHOS_EVENT_RETURN MythosWidgetContainer::update(MYTHOS_EVENT_KEY key, const MythosEvent& ptr) {
+
+	MYTHOS_EVENT_RETURN res = MYTHOS_CONTINUE;
+
+	MythosWidgetPtrVector::iterator it = mChildren.begin();
+
+	while (it != mChildren.end() && res == MYTHOS_CONTINUE) {
+
+		res = (*it)->update(key, ptr);
+		++it;
+	}
+
+	return res;
+}
+
+void MythosWidgetContainer::render() {
+
+	float scaleFactor = 1.0f / mChildren.size();
+
+	mythosPushMatrix();
+	mythosScalef(1.0f, 1.0f, MYTHOS_FAR * scaleFactor);
+
+	for (MythosWidgetPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
+
+		mythosTranslatef(0.0f, 0.0f, -1.0f);
+		mythosPushMatrix();
+		mythosScalef(1.0f, 1.0f, scaleFactor);
+
+		(*it)->render();
+
+		mythosPopMatrix();
+	}
+
+	mythosPopMatrix();
+}
+
+MythosContainer<MythosWidget>* MythosWidgetContainer::addChild(MythosWidget* widget) {
+
+	mChildren.emplace_back(widget);
+	return this;
+}
+
+void MythosWidgetContainer::removeChild(MythosWidget* widget) {
+
+	for (MythosWidgetPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
+
+		if (it->get() == widget) {
+
+			it->swap(MythosWidgetPtr(nullptr));
+			mChildren.erase(it);
+			break;
+		}
+	}
+}
+
+void MythosWidgetContainer::bumpChild(MythosWidget* widget) {
+
+	for (MythosWidgetPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
+
+		if (it->get() == widget) {
+
+			mChildren.splice(mChildren.begin(), mChildren, it);
+			break;
+		}
+	}
+}
+
+
+MythosGenericWidget::MythosGenericWidget(vec2f pos) {
 
 	mPos = pos;
 }
 
-MYTHOS_EVENT_RETURN MythosWidget::update(MYTHOS_EVENT_KEY key, const MythosEvent& ptr) {
+MYTHOS_EVENT_RETURN MythosGenericWidget::update(MYTHOS_EVENT_KEY key, const MythosEvent& ptr) {
 
 	MythosEventFuncMap::iterator it = mEvents.find(key);
 
@@ -18,12 +107,7 @@ MYTHOS_EVENT_RETURN MythosWidget::update(MYTHOS_EVENT_KEY key, const MythosEvent
 	return MYTHOS_CONTINUE;
 }
 
-void MythosWidget::setParent(MythosContainerWidget* parent) {
-
-	mParent = parent;
-}
-
-void MythosWidget::setEventFunc(MYTHOS_EVENT_KEY key, MythosEventFunc func) {
+void MythosGenericWidget::setEventFunc(MYTHOS_EVENT_KEY key, MythosEventFunc func) {
 
 	MythosEventFuncMap::iterator it = mEvents.find(key);
 
@@ -38,7 +122,7 @@ void MythosWidget::setEventFunc(MYTHOS_EVENT_KEY key, MythosEventFunc func) {
 	}
 }
 
-MythosEventFunc MythosWidget::getEventFunc(MYTHOS_EVENT_KEY key) {
+MythosEventFunc MythosGenericWidget::getEventFunc(MYTHOS_EVENT_KEY key) {
 
 	MythosEventFuncMap::iterator it = mEvents.find(key);
 
@@ -49,106 +133,38 @@ MythosEventFunc MythosWidget::getEventFunc(MYTHOS_EVENT_KEY key) {
 }
 
 
-MythosContainerWidget::MythosContainerWidget(vec2f pos) : MythosWidget(pos) {}
+MythosGenericContainerWidget::MythosGenericContainerWidget(vec2f pos) : MythosGenericWidget(pos) {}
 
-int MythosContainerWidget::inBounds(vec2f& pos) {
+int MythosGenericContainerWidget::inBounds(const vec2f& pos) {
 
-	vec2f nPos = pos - mPos;
-
-	for (MythosWidgetPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
-		
-		if ((*it)->inBounds(nPos))
-			return true;
-	}
-	
-	return false;
-}
-
-MYTHOS_EVENT_RETURN MythosContainerWidget::update(MYTHOS_EVENT_KEY key, const MythosEvent& ptr) {
-
-	MYTHOS_EVENT_RETURN res = MythosWidget::update(key, ptr);
-
-	MythosWidgetPtrVector::iterator it = mChildren.begin();
-
-	while (it != mChildren.end() && res == MYTHOS_CONTINUE) {
-
-		res = (*it)->update(key, ptr);
-
-		++it;
-	}
-
-	return res;
-}
-
-void MythosContainerWidget::render() {
-
-	float scaleFactor = 1.0f / mChildren.size();
-
-#ifdef MYTHOS_STACK
 	mythosPushMatrix();
 	mythosTranslatef(mPos.x, mPos.y, 0.0f);
-	mythosScalef(1.0f, 1.0f, MYTHOS_FAR * scaleFactor);
-#else
-	glPushMatrix();
-	glTranslated(mPos.x, mPos.y, 0.0);
-	glScaled(1.0, 1.0, MYTHOS_FAR / mChildren.size());
-#endif
-	
-	for (MythosWidgetPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
 
-#ifdef MYTHOS_STACK
-		mythosTranslatef(0.0f, 0.0f, -1.0f);
-		mythosPushMatrix();
-		mythosScalef(1.0f, 1.0f, scaleFactor);
-#else
-		glTranslated(0.0, 0.0, -1.0);
-		glPushMatrix();
-		glScaled(1.0, 1.0, 1.0 / mChildren.size());
-#endif
+	int ret = MythosWidgetContainer::inBounds(pos);
 
-		(*it)->render();
-
-#ifdef MYTHOS_STACK
-		mythosPopMatrix();
-#else
-		glPopMatrix();
-#endif
-	}
-
-#ifdef MYTHOS_STACK
 	mythosPopMatrix();
-#else
-	glPopMatrix();
-#endif
+
+	return ret;
 }
 
-void MythosContainerWidget::addChildWidget(MythosWidget* widget) {
+MYTHOS_EVENT_RETURN MythosGenericContainerWidget::update(MYTHOS_EVENT_KEY key, const MythosEvent& e) {
 
-	mChildren.emplace_back(widget);
-	widget->setParent(this);
+	mythosPushMatrix();
+	mythosTranslatef(mPos.x, mPos.y, 0.0f);
+
+	MYTHOS_EVENT_RETURN ret = MythosWidgetContainer::update(key, e);
+
+	mythosPopMatrix();
+
+	return ret;
 }
 
-void MythosContainerWidget::removeChildWidget(MythosWidget* widget) {
+void MythosGenericContainerWidget::render() {
 
-	for (MythosWidgetPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
-		
-		if (it->get() == widget) {
+	mythosPushMatrix();
+	mythosTranslatef(mPos.x, mPos.y, 0.0f);
 
-			it->swap(MythosWidgetPtr(nullptr));
-			mChildren.erase(it);
-			break;
-		}
-	}
-}
+	MythosWidgetContainer::render();
 
-void MythosContainerWidget::bumpChildWidget(MythosWidget* widget) {
-
-	for (MythosWidgetPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
-
-		if (it->get() == widget) {
-
-			mChildren.splice(mChildren.begin(), mChildren, it);
-			break;
-		}
-	}
+	mythosPopMatrix();
 }

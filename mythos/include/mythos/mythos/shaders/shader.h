@@ -1,28 +1,28 @@
 #pragma once
 
-#include "mythos_shader_sources.h"
+#include "shader_sources.h"
 
 class MythosShader {
 
-private:
+	private:
 
-	bool		mShaderLoaded = false;
+		bool		mShaderLoaded = false;
 
-	GLuint		mShader;
+		GLuint		mShader;
 
-public:
+	public:
 
-	~MythosShader();
+		~MythosShader();
 
-	void		load(const char*, const char*);
+		void		load(const char*, const char*);
 
-	void		loadRaw(const char*, const char*);
+		void		loadRaw(const char*, const char*);
 
-	GLuint		getAttribLocation(const char*);
+		GLuint		getAttribLocation(const char*);
 
-	GLuint		getUniformLocation(const char*);
+		GLuint		getUniformLocation(const char*);
 
-	void		use(void);
+		void		use(void);
 };
 
 

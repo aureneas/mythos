@@ -1,5 +1,5 @@
-#include "mythos_event.h"
-#include "mythos_window.h"
+#include <mythos\event.h>
+#include <mythos\window.h>
 
 
 MythosEvent::MythosEvent(MythosKeyEvent& k, MythosMouseEvent& m) : key(k), mouse(m) {}

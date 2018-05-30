@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../mythos_important_stuff.h"
+#include "../_important_stuff.h"
 
 MYTHOS_CORE_API const char* __mythosGetSolidShaderVertexSource(void);
 MYTHOS_CORE_API const char* __mythosGetSolidShaderFragmentSource(void);

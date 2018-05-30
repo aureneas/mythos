@@ -1,8 +1,7 @@
 #include <SOIL/src/SOIL.h>
-#include "mythos_texture.h"
-#include "../shaders/mythos_shader.h"
-#include "../shaders/mythos_shader_sources.h"
-#include "../utility/mythos_stack.h"
+#include <mythos\texture\texture.h>
+#include <mythos\shaders\shader.h>
+#include <mythos\utility\stack.h>
 
 #include <iostream>
 
@@ -20,8 +19,9 @@ const float __squarePosArr[] = {
 
 GLuint				__squareVAO;
 GLuint				__squareBuf;
-	// [0]	position coordinates
-	// [1]	texture coordinates
+
+MYTHOS_CORE_API const GLuint mythosGetSquareArr() { return __squareVAO; }
+MYTHOS_CORE_API const GLuint mythosGetSquareBuf() { return __squareBuf; }
 
 
 MythosShader*		__solidShader;
@@ -58,15 +58,6 @@ void __mythosTextureInit() {
 	__imageShaderPos = __imageShader->getAttribLocation("position");
 	__imageShaderTex = __imageShader->getAttribLocation("vertTexCoord");
 	__imageShaderMVPM = __imageShader->getUniformLocation("modelViewProjectionMatrix");
-}
-
-void __renderSquare() {
-
-	glBindVertexArray(__squareVAO);
-
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	glBindVertexArray(0);
 }
 
 
@@ -110,37 +101,77 @@ MYTHOS_CORE_API MythosImage mythosLoadImage(const char* path) {
 }
 
 
-MythosImageWidget::MythosImageWidget(MythosImage* image, vec2f pos) : MythosWidget(pos) {
+
+
+MythosImageTexture::MythosImageTexture(MythosImage* image, int flags) {
+
+	mImage = image;
+	setFlags(flags);
+}
+
+void MythosImageTexture::setImage(MythosImage* image) {
 
 	mImage = image;
 }
 
-void MythosImageWidget::setImage(MythosImage* image) {
+void MythosImageTexture::setFlags(int flags) {
 
-	mImage = image;
+	if ((flags & MYTHOS_ALIGN_HORIZONTAL_CENTER) == MYTHOS_ALIGN_HORIZONTAL_CENTER)
+		mHorizontalAlignment = 0.5f;
+	else if ((flags & MYTHOS_ALIGN_HORIZONTAL_LEFT) == MYTHOS_ALIGN_HORIZONTAL_LEFT)
+		mHorizontalAlignment = 0.0f;
+	else if ((flags & MYTHOS_ALIGN_HORIZONTAL_RIGHT) == MYTHOS_ALIGN_HORIZONTAL_RIGHT)
+		mHorizontalAlignment = 1.0f;
+
+	if ((flags & MYTHOS_ALIGN_VERTICAL_CENTER) == MYTHOS_ALIGN_VERTICAL_CENTER)
+		mVerticalAlignment = 0.5f;
+	else if ((flags & MYTHOS_ALIGN_VERTICAL_TOP) == MYTHOS_ALIGN_VERTICAL_TOP)
+		mVerticalAlignment = 0.0f;
+	else if ((flags & MYTHOS_ALIGN_VERTICAL_BOTTOM) == MYTHOS_ALIGN_VERTICAL_BOTTOM)
+		mVerticalAlignment = 1.0f;
 }
 
-int MythosImageWidget::inBounds(vec2f& pos) {
+void MythosImageTexture::transform(int stack) {
 
-	return __MYTHOS_WITHIN_BOUNDS(pos, 0.0f, mImage->width, 0.0f, mImage->height);
+	mythosScalef(mImage->width, mImage->height, 1.0f, stack);
+	mythosTranslatef(mHorizontalAlignment, mVerticalAlignment, 0.0f, stack);
 }
 
-void MythosImageWidget::render() {
+int MythosImageTexture::inBounds(const vec2f& pos, int stack) {
 
-#ifdef MYTHOS_STACK
-	mythosPushMatrix();
-	mythosTranslatef(mPos.x, mPos.y, 0.0f);
-	mythosScalef(mImage->width, mImage->height, 1);
-#else
-	glPushMatrix();
-	glScalef(mImage->widthf, mImage->heightf, 1.0);
-#endif
+	return inBounds({ vec3f(pos), vec3f(0.0f, 0.0f, 1.0f) }, stack);
+}
+
+int MythosImageTexture::inBounds(const Line& line, int stack) {
+
+	mythosPushMatrix(stack);
+	transform(stack);
+
+	Plane plane = { vec3f(0.0f, 0.0f, 1.0f), 0.0f };
+	Line newLine = { vec3f(mythosUnproject(line.origin)), vec3f(mythosUnproject(line.direction)) };
+	float t = plane.getIntersect(newLine);
+
+	mythosPopMatrix(stack);
+
+	if (t != INFINITY) {
+
+		vec3f pos = newLine.getPoint(t);
+		return __MYTHOS_WITHIN_BOUNDS(pos, 0.0f, 1.0f, 0.0f, 1.0f);
+	}
+	
+	return MYTHOS_FALSE;
+}
+
+void MythosImageTexture::renderSetup(int stack) {
+
+	mythosPushMatrix(stack);
+	transform(stack);
 
 	__imageShader->use();
 
 	glBindTexture(GL_TEXTURE_2D, mImage->key);
-	mythosSendMatrixToShader(__imageShaderMVPM);
-	
+	mythosSendMatrixToShader(__imageShaderMVPM, stack);
+
 	glEnableVertexAttribArray(__imageShaderPos);
 	glBindBuffer(GL_ARRAY_BUFFER, __squareBuf);
 	glVertexAttribPointer(
@@ -152,13 +183,56 @@ void MythosImageWidget::render() {
 		(void*)0
 	);
 
-	__renderSquare();
+	glBindVertexArray(__squareVAO);
+}
 
+void MythosImageTexture::render(int stack) {
+
+	renderSetup(stack);
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	
+	glBindVertexArray(0);
 	glDisableVertexAttribArray(__imageShaderPos);
+	mythosPopMatrix(stack);
+}
 
-#ifdef MYTHOS_STACK
-	mythosPopMatrix();
-#else
-	glPopMatrix();
-#endif
+float MythosImageTexture::getWidth() {
+
+	if (mImage)
+		return mImage->width;
+	return 0.0f;
+}
+
+float MythosImageTexture::getHeight() {
+
+	if (mImage)
+		return mImage->height;
+	return 0.0f;
+}
+
+
+
+template <>
+void MythosTriangleImageTexture<0>::render(int stack) {
+
+	renderSetup(stack);
+
+	glDrawArrays(GL_TRIANGLES, 3, 3);
+
+	glBindVertexArray(0);
+	glDisableVertexAttribArray(__imageShaderPos);
+	mythosPopMatrix(stack);
+}
+
+template <>
+void MythosTriangleImageTexture<1>::render(int stack) {
+
+	renderSetup(stack);
+
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	glBindVertexArray(0);
+	glDisableVertexAttribArray(__imageShaderPos);
+	mythosPopMatrix(stack);
 }

@@ -3,10 +3,9 @@
 #include <thread>
 #include <ctime>
 
-#include "mythos_core.h"
+#include <mythos\mythos.h>
 
 #include <iostream>
-#include "shaders\mythos_shader.h"
 
 
 MYTHOS_CORE_API void mythosInit() {

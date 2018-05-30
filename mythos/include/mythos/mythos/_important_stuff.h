@@ -27,4 +27,7 @@
 
 #define MYTHOS_STACK
 
-#include "mythos_error.h"
+#include "error.h"
+
+#define MYTHOS_TRUE		1
+#define MYTHOS_FALSE	0

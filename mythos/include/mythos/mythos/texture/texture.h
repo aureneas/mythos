@@ -1,8 +1,18 @@
 #pragma once
 
-#include "../mythos_important_stuff.h"
-#include "../mythos_widget.h"
-#include "../utility/matrix.h"
+#include "../_important_stuff.h"
+#include "../widget.h"
+#include "../utility/stack.h"
+#include "../utility/geometry.h"
+
+
+#define MYTHOS_ALIGN_HORIZONTAL_LEFT	1
+#define MYTHOS_ALIGN_HORIZONTAL_CENTER	3
+#define MYTHOS_ALIGN_HORIZONTAL_RIGHT	2
+
+#define MYTHOS_ALIGN_VERTICAL_TOP		4
+#define MYTHOS_ALIGN_VERTICAL_CENTER	12
+#define MYTHOS_ALIGN_VERTICAL_BOTTOM	8
 
 
 #define MYTHOS_POS 0
@@ -40,24 +50,68 @@ struct MYTHOS_CORE_API MythosImage {
 };
 
 
-class MYTHOS_CORE_API MythosImageWidget : public MythosWidget {
 
-	private:
-
-		MythosImage*		mImage;
+class MYTHOS_CORE_API MythosTexture {
 
 	public:
 
-		MythosImageWidget(MythosImage*, vec2f);
+		virtual int				inBounds(const vec2f&, int = MYTHOS_MODELVIEW) { return MYTHOS_FALSE; }
+		virtual int				inBounds(const Line&, int = MYTHOS_MODELVIEW) { return MYTHOS_FALSE; }
 
-		int					inBounds(vec2f&);
+		virtual void			render(int = MYTHOS_MODELVIEW) = 0;
+		virtual void			transform(int = MYTHOS_MODELVIEW) {}
 
-		void				render(void);
+		virtual float			getWidth(void) { return 0.0f; }
+		virtual float			getHeight(void) { return 0.0f; }
+};
 
-		void				setImage(MythosImage*);
+
+class MYTHOS_CORE_API MythosImageTexture : public MythosTexture {
+
+	private:
+
+		MythosImage*			mImage;
+		
+		float					mHorizontalAlignment;
+		float					mVerticalAlignment;
+
+	protected:
+
+		void					renderSetup(int);
+
+	public:
+
+		MythosImageTexture(MythosImage*, int = 0);
+
+		int						inBounds(const vec2f&, int = MYTHOS_MODELVIEW);
+		int						inBounds(const Line&, int = MYTHOS_MODELVIEW);
+
+		virtual void			render(int = MYTHOS_MODELVIEW);
+		virtual void			transform(int = MYTHOS_MODELVIEW);
+
+		void					setImage(MythosImage*);
+
+		void					setFlags(int);
+
+		float					getWidth(void);
+		float					getHeight(void);
+};
+
+template <int INCLUDES_X1_Y0>
+class MYTHOS_CORE_API MythosTriangleImageTexture : public MythosImageTexture {
+
+	public:
+
+		MythosTriangleImageTexture(MythosImage* image, int flags = 0) : MythosImageTexture(image, flags) {}
+
+		void					render(int = MYTHOS_MODELVIEW);
 };
 
 
 void						__mythosTextureInit(void);
 
 MYTHOS_CORE_API	MythosImage mythosLoadImage(const char*);
+
+
+MYTHOS_CORE_API const GLuint mythosGetSquareArr(void);
+MYTHOS_CORE_API const GLuint mythosGetSquareBuf(void);
