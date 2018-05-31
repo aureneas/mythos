@@ -182,14 +182,13 @@ MYTHOS_EVENT_RETURN MythosWindow::update(MYTHOS_EVENT_KEY key, const MythosEvent
 
 	MYTHOS_EVENT_RETURN res = MythosGenericContainerWidget::update(key, ptr);
 
-	if (key == MYTHOS_TIMER) {
+	if (key == MYTHOS_TIMER_EVENT) {
 
 		MythosWindowPtrVector::iterator it = mChildren.begin();
 
 		while (it != mChildren.end() && res == MYTHOS_CONTINUE) {
 
 			res = (*it)->update(key, ptr);
-
 			++it;
 		}
 	}

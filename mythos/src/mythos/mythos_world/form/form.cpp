@@ -1,104 +1,104 @@
 #include <mythos_world\form\form.h>
+#include <mythos_world\form\world.h>
 
 
-MythosForm::MythosForm(MythosVolume* volume) : mVolume(volume) {}
+vec3f MythosForm::getWorldPosition(void) {
 
-void MythosForm::render() {
-
-	if (mTexture) {
-
-		vec3f& fPos = mVolume->getCenter();
-		vec3f tPos = vec3f(mythosProject(vec4f(fPos), MYTHOS_WORLDVIEW));
-
-		mythosPushMatrix(MYTHOS_MODELVIEW);
-		mythosTranslatef(tPos.x, tPos.y, tPos.z, MYTHOS_MODELVIEW);
-
-		mythosPushMatrix(MYTHOS_WORLDVIEW);
-		mythosTranslatef(fPos.x, fPos.y, fPos.z, MYTHOS_WORLDVIEW);
-
-		mTexture->render();
-
-		mythosPopMatrix(MYTHOS_MODELVIEW);
-		mythosPopMatrix(MYTHOS_WORLDVIEW);
-	}
+	if (MythosChunkForm* openParent = dynamic_cast<MythosChunkForm*>(mParent))
+		return openParent->getWorldPosition() + mPosition;
+	else
+		return mPosition;
 }
 
-void MythosForm::setParent(MythosContainer<MythosForm>* parent) {
+MythosFormPtr MythosForm::setParentForm(MythosContainer<MythosForm>* parent) {
 
+	MythosFormPtr ptr;
 	if (mParent)
-		mParent->removeChild(this);
+		ptr = mParent->removeChild(this);
+	else
+		ptr.reset(this);
 	mParent = parent;
 }
 
-void MythosForm::setTexture(MythosTexture* texture) {
-
-	mTexture = texture;
-}
-
-
-
-int MythosDynamicContainerForm::addChild(MythosForm* form) {
-
-	mChildren.emplace(form);
-	form->setParent(this);
-	return MYTHOS_TRUE;
-}
-
-void MythosDynamicContainerForm::removeChild(MythosForm* form) {
-
-	MythosFormPtrSet::iterator it = mChildren.find(MythosFormPtr(form));
-
-	if (it != mChildren.end())
-		mChildren.erase(it);
-}
-
-void MythosDynamicContainerForm::renderChildren() {
+int MythosForm::inBounds(const vec3f& pos) {
 
 	mythosPushMatrix(MYTHOS_WORLDVIEW);
-	mythosTranslatef(getVolume()->getCenter(), MYTHOS_WORLDVIEW);
+	mythosTranslatef(mPosition * -1, MYTHOS_WORLDVIEW);
 
-	for (MythosFormPtrSet::iterator it = mChildren.begin(); it != mChildren.end(); ++it)
-		(*it)->render();
+	int ret = mData->inBounds(pos);
 
 	mythosPopMatrix(MYTHOS_WORLDVIEW);
+	return ret;
+}
+
+MYTHOS_EVENT_RETURN MythosForm::update(MYTHOS_EVENT_KEY key, const MythosEvent& e) {
+
+	mythosPushMatrix(MYTHOS_WORLDVIEW);
+	mythosTranslatef(mPosition * -1, MYTHOS_WORLDVIEW);
+
+	MYTHOS_EVENT_RETURN ret = mData->update(key, this, e);
+
+	mythosPopMatrix(MYTHOS_WORLDVIEW);
+	return ret;
+}
+
+void MythosForm::render(void) {
+
+	mythosPushMatrix(MYTHOS_WORLDVIEW_RENDER);
+	mythosTranslatef(mPosition * -1, MYTHOS_WORLDVIEW_RENDER);
+
+	mData->render();
+
+	mythosPopMatrix(MYTHOS_WORLDVIEW_RENDER);
 }
 
 
 
-void MythosGenericFormAttr::setEventFunc(MYTHOS_EVENT_KEY key, MythosEventFormFunc func) {
+MythosContainer<MythosForm>* MythosDynamicFormContainer::addChild(MythosForm* child) {
 
-	MythosEventFormFuncMap::iterator it = mEvents.find(key);
+	MythosFormPtr ptr(child->setParentForm(this));
+	mChildren.insert(ptr);
+	return this;
+}
 
-	if (it != mEvents.end()) {
+MythosFormPtr MythosDynamicFormContainer::removeChild(MythosForm* child) {
 
-		mEvents.erase(it);
-		mEvents.emplace_hint(it, key, func);
+	MythosFormPtrContainer::iterator it = mChildren.find(MythosFormPtr(child));
+
+	if (it != mChildren.end()) {
+		MythosFormPtr childPtr(*it);
+		mChildren.erase(it);
+		return childPtr;
 	}
-	else {
 
-		mEvents.emplace(key, func);
+	return MythosFormPtr(nullptr);
+}
+
+int MythosDynamicFormContainer::inBounds(const vec2f& pos) {
+
+	for (MythosFormPtrContainer::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
+
+		if ((*it)->inBounds(pos))
+			return MYTHOS_TRUE;
 	}
+
+	return MYTHOS_FALSE;
 }
 
-MythosEventFormFunc MythosGenericFormAttr::getEventFunc(MYTHOS_EVENT_KEY key) {
+MYTHOS_EVENT_RETURN MythosDynamicFormContainer::update(MYTHOS_EVENT_KEY key, const MythosEvent& e) {
 
-	MythosEventFormFuncMap::iterator it = mEvents.find(key);
+	for (MythosFormPtrContainer::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
 
-	if (it != mEvents.end())
-		return it->second;
+		MYTHOS_EVENT_RETURN ret = (*it)->update(key, e);
+		if (ret != MYTHOS_CONTINUE)
+			return ret;
+	}
 
-	return nullptr;
+	return MYTHOS_CONTINUE;
 }
 
+void MythosDynamicFormContainer::renderChildren() {
 
-MythosGenericForm::MythosGenericForm(MythosVolume* volume) : MythosForm(volume) {}
-
-MYTHOS_EVENT_RETURN MythosGenericForm::update(MYTHOS_EVENT_KEY key, const MythosEvent& e) {
-
-	MythosEventFormFunc func = getEventFunc(key);
-
-	if (func)
-		return func(this, e);
-
-	return MYTHOS_STOP;
+	for (MythosFormPtrContainer::iterator it = mChildren.begin(); it != mChildren.end(); ++it)
+		(*it)->render();
 }

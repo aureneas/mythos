@@ -14,7 +14,7 @@ template <typename Numeric, int W, int H>
 struct Matrix {
 	Numeric m[W * H];
 
-	Matrix() {
+	constexpr Matrix() {
 		
 		for (int i = W - 1; i >= 0; --i) {
 			for (int j = H - 1; j >= 0; --j)
@@ -89,7 +89,7 @@ struct Matrix {
 
 
 	template <typename NumericRHS>
-	Matrix<Numeric, W, H> operator+(const Matrix<NumericRHS, W, H>& rhs) {
+	constexpr Matrix<Numeric, W, H> operator+(const Matrix<NumericRHS, W, H>& rhs) {
 		
 		Matrix<Numeric, W, H> result = *this;
 		result += rhs;
@@ -97,7 +97,7 @@ struct Matrix {
 	}
 
 	template <typename NumericRHS>
-	Matrix<Numeric, W, H> operator-(const Matrix<NumericRHS, W, H>& rhs) {
+	constexpr Matrix<Numeric, W, H> operator-(const Matrix<NumericRHS, W, H>& rhs) {
 		
 		Matrix<Numeric, W, H> result = *this;
 		result -= rhs;
@@ -105,7 +105,7 @@ struct Matrix {
 	}
 
 	template <typename NumericRHS>
-	Matrix<Numeric, W, H> operator*(const NumericRHS rhs) {
+	constexpr Matrix<Numeric, W, H> operator*(const NumericRHS rhs) {
 
 		Matrix<Numeric, W, H> result = *this;
 		result *= rhs;
@@ -113,7 +113,7 @@ struct Matrix {
 	}
 
 	template <typename NumericRHS>
-	Matrix<Numeric, W, H> operator*(const Matrix<NumericRHS, W, H>& rhs) {
+	constexpr Matrix<Numeric, W, H> operator*(const Matrix<NumericRHS, W, H>& rhs) {
 		
 		Matrix<Numeric, W, H> result = *this;
 		result *= rhs;
@@ -121,7 +121,7 @@ struct Matrix {
 	}
 
 	template <typename NumericRHS, int H_RHS>
-	Matrix<Numeric, W, H_RHS> operator%(const Matrix<NumericRHS, H, H_RHS>& rhs) {
+	constexpr Matrix<Numeric, W, H_RHS> operator%(const Matrix<NumericRHS, H, H_RHS>& rhs) {
 		
 		Matrix<Numeric, W, H_RHS> result;
 		for (int i = W - 1; i >= 0; --i) {
@@ -134,7 +134,7 @@ struct Matrix {
 	}
 
 
-	Matrix<Numeric, H, W> transpose() {
+	constexpr Matrix<Numeric, H, W> transpose() {
 
 		Matrix<Numeric, H, W> result;
 		for (int i = H - 1; i >= 0; --i) {
@@ -149,7 +149,7 @@ struct Matrix {
 template <typename Numeric, int W>
 struct SquareMatrix : public Matrix<Numeric, W, W> {
 
-	SquareMatrix<Numeric, W>() {}
+	constexpr SquareMatrix<Numeric, W>() {}
 
 	template <int W_rhs>
 	SquareMatrix<Numeric, W>(const Matrix<Numeric, W_rhs, W_rhs>& v) {
@@ -175,7 +175,7 @@ struct SquareMatrix : public Matrix<Numeric, W, W> {
 		return (SquareMatrix<Numeric, W>&)Matrix<Numeric, W, W>::operator=(rhs);
 	}
 
-	SquareMatrix<Numeric, W - 1> submatrix(int row, int col) {
+	constexpr SquareMatrix<Numeric, W - 1> submatrix(int row, int col) {
 
 		SquareMatrix<Numeric, W - 1> sMat;
 
@@ -200,7 +200,7 @@ struct SquareMatrix : public Matrix<Numeric, W, W> {
 		return sMat;
 	}
 
-	Numeric determinant() {
+	constexpr Numeric determinant() {
 
 		// TODO make more efficient
 
@@ -212,7 +212,7 @@ struct SquareMatrix : public Matrix<Numeric, W, W> {
 		return det;
 	}
 
-	SquareMatrix<float, W> inverse() {
+	constexpr SquareMatrix<float, W> inverse() {
 
 		// TODO make more efficient
 
@@ -267,7 +267,7 @@ struct VectorW : public Matrix<Numeric, W, 1> {
 		return m[i];
 	}
 
-	float length() {
+	constexpr float length() {
 		
 		float sum_squares = 0.0f;
 		for (int i = W - 1; i >= 0; --i)
@@ -276,7 +276,7 @@ struct VectorW : public Matrix<Numeric, W, 1> {
 	}
 
 	template <typename NumericRHS, int W_RHS>
-	float dot(const VectorW<NumericRHS, W_RHS>& rhs) {
+	constexpr float dot(const VectorW<NumericRHS, W_RHS>& rhs) {
 		
 		float sum = 0;
 		for (int i = ((W <= W_RHS) ? W : W_RHS) - 1; i >= 0; --i)
@@ -325,22 +325,22 @@ struct Vec2 : public VectorW<Numeric, 2> {
 
 
 	template <typename NumericRHS>
-	Vec2<Numeric> operator+(const Vec2<NumericRHS>& rhs) {
+	constexpr Vec2<Numeric> operator+(const Vec2<NumericRHS>& rhs) {
 		return Vec2<Numeric>(Matrix<Numeric, 2, 1>::operator+(rhs));
 	}
 
 	template <typename NumericRHS>
-	Vec2<Numeric> operator-(const Vec2<NumericRHS>& rhs) {
+	constexpr Vec2<Numeric> operator-(const Vec2<NumericRHS>& rhs) {
 		return Vec2<Numeric>(Matrix<Numeric, 2, 1>::operator-(rhs));
 	}
 
 	template <typename NumericRHS>
-	Vec2<Numeric> operator*(const NumericRHS rhs) {
+	constexpr Vec2<Numeric> operator*(const NumericRHS rhs) {
 		return Vec2<Numeric>(Matrix<Numeric, 2, 1>::operator*(rhs));
 	}
 
 	template <typename NumericRHS>
-	Vec2<Numeric> operator*(const Vec2<NumericRHS>& rhs) {
+	constexpr Vec2<Numeric> operator*(const Vec2<NumericRHS>& rhs) {
 		return Vec2<Numeric>(Matrix<Numeric, 2, 1>::operator*(rhs));
 	}
 };
@@ -387,22 +387,22 @@ struct Vec3 : public VectorW<Numeric, 3> {
 
 
 	template <typename NumericRHS>
-	Vec3<Numeric> operator+(const Vec3<NumericRHS>& rhs) {
+	constexpr Vec3<Numeric> operator+(const Vec3<NumericRHS>& rhs) {
 		return Vec3<Numeric>(Matrix<Numeric, 3, 1>::operator+(rhs));
 	}
 
 	template <typename NumericRHS>
-	Vec3<Numeric> operator-(const Vec3<NumericRHS>& rhs) {
+	constexpr Vec3<Numeric> operator-(const Vec3<NumericRHS>& rhs) {
 		return Vec3<Numeric>(Matrix<Numeric, 3, 1>::operator-(rhs));
 	}
 
 	template <typename NumericRHS>
-	Vec3<Numeric> operator*(const NumericRHS rhs) {
+	constexpr Vec3<Numeric> operator*(const NumericRHS rhs) {
 		return Vec3<Numeric>(Matrix<Numeric, 3, 1>::operator*(rhs));
 	}
 
 	template <typename NumericRHS>
-	Vec3<Numeric> operator*(const Vec3<NumericRHS>& rhs) {
+	constexpr Vec3<Numeric> operator*(const Vec3<NumericRHS>& rhs) {
 		return Vec3<Numeric>(Matrix<Numeric, 3, 1>::operator*(rhs));
 	}
 };
@@ -455,22 +455,22 @@ struct Vec4 : public VectorW<Numeric, 4> {
 
 
 	template <typename NumericRHS>
-	Vec4<Numeric> operator+(const Vec4<NumericRHS>& rhs) {
+	constexpr Vec4<Numeric> operator+(const Vec4<NumericRHS>& rhs) {
 		return Vec4<Numeric>(Matrix<Numeric, 4, 1>::operator+(rhs));
 	}
 
 	template <typename NumericRHS>
-	Vec4<Numeric> operator-(const Vec4<NumericRHS>& rhs) {
+	constexpr Vec4<Numeric> operator-(const Vec4<NumericRHS>& rhs) {
 		return Vec4<Numeric>(Matrix<Numeric, 4, 1>::operator-(rhs));
 	}
 
 	template <typename NumericRHS>
-	Vec4<Numeric> operator*(const NumericRHS rhs) {
+	constexpr Vec4<Numeric> operator*(const NumericRHS rhs) {
 		return Vec4<Numeric>(Matrix<Numeric, 4, 1>::operator*(rhs));
 	}
 
 	template <typename NumericRHS>
-	Vec4<Numeric> operator*(const Vec4<NumericRHS>& rhs) {
+	constexpr Vec4<Numeric> operator*(const Vec4<NumericRHS>& rhs) {
 		return Vec4<Numeric>(Matrix<Numeric, 4, 1>::operator*(rhs));
 	}
 };

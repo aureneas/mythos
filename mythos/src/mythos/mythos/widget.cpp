@@ -15,7 +15,7 @@ void MythosWidget::setParent(MythosContainer<MythosWidget>* parent) {
 
 int MythosWidgetContainer::inBounds(const vec2f& pos) {
 
-	for (MythosWidgetPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
+	for (MythosWidgetPtrContainer::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
 
 		if ((*it)->inBounds(pos))
 			return MYTHOS_TRUE;
@@ -28,7 +28,7 @@ MYTHOS_EVENT_RETURN MythosWidgetContainer::update(MYTHOS_EVENT_KEY key, const My
 
 	MYTHOS_EVENT_RETURN res = MYTHOS_CONTINUE;
 
-	MythosWidgetPtrVector::iterator it = mChildren.begin();
+	MythosWidgetPtrContainer::iterator it = mChildren.begin();
 
 	while (it != mChildren.end() && res == MYTHOS_CONTINUE) {
 
@@ -46,7 +46,7 @@ void MythosWidgetContainer::render() {
 	mythosPushMatrix();
 	mythosScalef(1.0f, 1.0f, MYTHOS_FAR * scaleFactor);
 
-	for (MythosWidgetPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
+	for (MythosWidgetPtrContainer::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
 
 		mythosTranslatef(0.0f, 0.0f, -1.0f);
 		mythosPushMatrix();
@@ -62,26 +62,29 @@ void MythosWidgetContainer::render() {
 
 MythosContainer<MythosWidget>* MythosWidgetContainer::addChild(MythosWidget* widget) {
 
-	mChildren.emplace_back(widget);
+	MythosWidgetPtr widgetPtr(widget);
+	mChildren.push_back(widgetPtr);
 	return this;
 }
 
-void MythosWidgetContainer::removeChild(MythosWidget* widget) {
+MythosWidgetPtr MythosWidgetContainer::removeChild(MythosWidget* widget) {
 
-	for (MythosWidgetPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
+	for (MythosWidgetPtrContainer::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
 
 		if (it->get() == widget) {
 
-			it->swap(MythosWidgetPtr(nullptr));
+			MythosWidgetPtr widgetPtr(*it);
 			mChildren.erase(it);
-			break;
+			return widgetPtr;
 		}
 	}
+
+	return MythosWidgetPtr(nullptr);
 }
 
 void MythosWidgetContainer::bumpChild(MythosWidget* widget) {
 
-	for (MythosWidgetPtrVector::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
+	for (MythosWidgetPtrContainer::iterator it = mChildren.begin(); it != mChildren.end(); ++it) {
 
 		if (it->get() == widget) {
 

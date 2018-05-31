@@ -57,7 +57,7 @@ MYTHOS_CORE_API int mythosCreateStack(int index) {
 
 	__MythosStackMap::iterator it = __mythosStack.find(index);
 
-	if (it != __mythosStack.end())
+	if (it != __mythosStack.end()) 
 		throw MythosError("Stack Occupied Index Error", "Attempted to create stack with an index already in use.");
 
 	__MythosStack stack;
@@ -71,16 +71,20 @@ MYTHOS_CORE_API int mythosCreateStack(int index) {
 	return index;
 }
 
-MYTHOS_CORE_API int mythosCloneStack(int indexCloneFrom, int indexCloneTo) {
-
-	__MythosStackMap::iterator itCloneTo = __mythosStack.find(indexCloneTo);
-
-	if (itCloneTo != __mythosStack.end())
-		throw MythosError("Stack Occupied Index Error", "Attempted to create stack with an index already in use.");
+MYTHOS_CORE_API int mythosCloneStack(int indexCloneTo, int indexCloneFrom) {
 
 	__MythosStack& stackCloneFrom = __mythosGetStack(indexCloneFrom);
+	__MythosStackMap::iterator itCloneTo = __mythosStack.find(indexCloneTo);
 
-	__mythosStack.emplace(indexCloneTo, stackCloneFrom);
+	if (itCloneTo != __mythosStack.end()) {
+
+		__mythosStack.erase(itCloneTo);
+		__mythosStack.emplace_hint(itCloneTo, indexCloneTo, stackCloneFrom);
+	}
+	else {
+
+		__mythosStack.emplace(indexCloneTo, stackCloneFrom);
+	}
 
 	if (indexCloneTo >= 0)
 		mythosCloneStack(-(indexCloneFrom + 1), -(indexCloneTo + 1));
@@ -292,6 +296,13 @@ MYTHOS_CORE_API vec4f mythosUnproject(const vec2f& pos, int index) {
 	mat4f inv = __mythosGetInverse(index);
 
 	return vec4f(inv % vec4f(pos));
+}
+
+MYTHOS_CORE_API Line mythosUnproject(const Line& line, int index) {
+
+	mat4f inv = __mythosGetInverse(index);
+
+	return line.transform(inv);
 }
 
 

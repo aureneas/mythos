@@ -1,102 +1,96 @@
 #pragma once
 
 #include <memory>
+#include <unordered_set>
 #include <unordered_map>
-#include "..\_important_stuff.h"
-#include "..\geometry\volume.h"
+#include "..\data\form.h"
 
 
-#define MYTHOS_WORLDVIEW		1
-
-
-#define MYTHOS_MOUSE_OFF		8
-#define MYTHOS_MOUSE_ON			9
-
-
-class MythosForm;
+#define MYTHOS_WORLDVIEW			2
+#define MYTHOS_WORLDVIEW_RENDER		3
 
 
 class MYTHOS_WORLD_API MythosForm {
 
-	private:
+	protected:
+		MythosFormData*							mData;
+		MythosContainer<MythosForm>*			mParent = nullptr;
 
-		MythosContainer<MythosForm>*		mParent;
+		vec3f									mPosition;
+
+	public:
+		/*
+		Gets the position of the form relative to the parent.
+		*/
+		virtual const vec3f&					getPosition(void) { return mPosition; }
+
+		/*
+		Gets the position of the form relative to the worldview.
+		*/
+		virtual vec3f							getWorldPosition(void);
+
+		/*
+		Sets the position of the form relative to the parent.
+		*/
+		virtual void							setPosition(const vec3f& pos) { mPosition = pos; }
+
+		/*
+		Shifts the position of the form by the passed-in vec3f.
+		*/
+		virtual void							shiftPosition(const vec3f& dif) { mPosition += dif; }
+
+		/*
+		Checks whether the vec2f is contained within the projection of the form onto the screen.
+		When inBounds() is called, the current tranformation should have (0,0) as the position of the parent.
+		*/
+		virtual int								inBounds(const vec2f&) { return MYTHOS_FALSE; }
+
+		/*
+		Checks whether the vec3f is contained within the worldview volume of the form.
+		The vec3f should be defined in the space where (0,0) is the position of the parent.
+		*/
+		virtual int								inBounds(const vec3f&);
+
+		/*
+		Updates the form with an event (keyboard, mouse, timer).
+		When update() is called, the current transformation should have (0,0) as the position of the parent.
+		*/
+		virtual MYTHOS_EVENT_RETURN				update(MYTHOS_EVENT_KEY, const MythosEvent&);
+
+		/*
+		Renders the form.
+		When render() is called, the current transformation should have (0,0) as the position of the parent.
+		*/
+		virtual void							render(void);
+
+		MythosFormPtr							setParentForm(MythosContainer<MythosForm>*);
+		MythosContainer<MythosForm>*			getParentForm(void) { return mParent; }
+};
+
+
+
+typedef std::shared_ptr<MythosForm>				MythosFormPtr;
+typedef std::unordered_set<MythosFormPtr>		MythosFormPtrContainer;
+
+
+class MYTHOS_WORLD_API MythosBasicFormContainer : public MythosContainer<MythosForm> {
+
+	public:
+		virtual void							renderChildren(void) = 0;
+};
+
+class MYTHOS_WORLD_API MythosDynamicFormContainer : public MythosBasicFormContainer {
 
 	protected:
 
-		std::unique_ptr<MythosVolume>		mVolume;
-
-		MythosTexture*						mTexture;
+		MythosFormPtrContainer					mChildren;
 
 	public:
 
-		MythosForm(MythosVolume*);
+		virtual MythosContainer<MythosForm>*	addChild(MythosForm*);
+		virtual MythosFormPtr					removeChild(MythosForm*);
 
-		virtual MYTHOS_EVENT_RETURN			update(MYTHOS_EVENT_KEY, const MythosEvent&) { return MYTHOS_CONTINUE; }
-
-		virtual void						render(void);
-	
-		void								setParent(MythosContainer<MythosForm>*);
-
-		MythosContainer<MythosForm>*		getParent(void) { return mParent; }
-
-		void								setTexture(MythosTexture*);
-
-		MythosTexture*						getTexture(void) { return mTexture; }
-
-		MythosVolume*						getVolume(void) { return mVolume.get(); }
-};
-
-
-typedef std::shared_ptr<MythosForm> MythosFormPtr;
-
-typedef std::unordered_set<MythosFormPtr> MythosFormPtrSet;
-
-class MYTHOS_WORLD_API MythosContainerForm : public MythosForm, public MythosContainer<MythosForm> {
-
-	public:
-
-		virtual void renderChildren(void) = 0;
-};
-
-class MYTHOS_WORLD_API MythosDynamicContainerForm : public MythosContainerForm {
-
-	protected:
-
-		MythosFormPtrSet			mChildren;
-
-	public:
-
-		virtual int					addChild(MythosForm*);
-
-		virtual void				removeChild(MythosForm*);
-
-		virtual void				renderChildren(void);
-};
-
-
-
-typedef MYTHOS_EVENT_RETURN(*MythosEventFormFunc)(MythosForm*, const MythosEvent& e);
-
-typedef std::unordered_map<MYTHOS_EVENT_KEY, MythosEventFormFunc> MythosEventFormFuncMap;
-
-class MYTHOS_WORLD_API MythosGenericFormAttr {
-
-	private:
-
-		MythosEventFormFuncMap				mEvents;
-
-	public:
-
-		void								setEventFunc(MYTHOS_EVENT_KEY, MythosEventFormFunc);
-		MythosEventFormFunc					getEventFunc(MYTHOS_EVENT_KEY);
-};
-
-class MYTHOS_WORLD_API MythosGenericForm : public MythosForm, public MythosGenericFormAttr {
-
-	public:
-
-		MythosGenericForm(MythosVolume*);
-
-		MYTHOS_EVENT_RETURN					update(MYTHOS_EVENT_KEY, const MythosEvent&);
+		virtual int								inBounds(const vec2f&);
+		virtual MYTHOS_EVENT_RETURN				update(MYTHOS_EVENT_KEY, const MythosEvent&);
+		virtual void							renderChildren(void);
 };

@@ -1,8 +1,12 @@
 #pragma once
 
 #include "matrix.h"
+#include "geometry.h"
 
-#define MYTHOS_MODELVIEW 0
+
+#define MYTHOS_MODELVIEW			0
+#define MYTHOS_MODELVIEW_RENDER		1
+
 
 void __mythosStackInit(void);
 
@@ -34,6 +38,7 @@ MYTHOS_CORE_API vec4f			mythosProject(const vec4f&, int = MYTHOS_MODELVIEW);
 
 MYTHOS_CORE_API vec4f			mythosUnproject(float, float, int = MYTHOS_MODELVIEW);
 MYTHOS_CORE_API vec4f			mythosUnproject(const vec2f&, int = MYTHOS_MODELVIEW);
+MYTHOS_CORE_API Line			mythosUnproject(const Line&, int MYTHOS_MODELVIEW);
 
 MYTHOS_CORE_API void			mythosSendMatrixToShader(GLuint, int = MYTHOS_MODELVIEW);
 
